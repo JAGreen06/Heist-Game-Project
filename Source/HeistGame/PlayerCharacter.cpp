@@ -2,6 +2,15 @@
 
 
 #include "PlayerCharacter.h"
+#include "InputAction.h"
+#include "InputMappingContext.h"
+#include "EnhancedInputSubsystems.h"
+#include "EnhancedInputComponent.h"
+#include "Components/CapsuleComponent.h"
+#include "Camera/CameraComponent.h"
+#include "GameFramework/SpringArmComponent.h"
+
+
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -9,13 +18,30 @@ APlayerCharacter::APlayerCharacter()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	//Spring Arm Setup
+	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Spring Arm"));
+	SpringArm->SetupAttachment(GetCapsuleComponent());
+	SpringArm->SetRelativeLocation(FVector(0.0f, 0.0f, 30.0f));
+	SpringArm->SetRelativeRotation(FRotator(-60.f, 0.f, 0.f));
+
+	//Camera Setup
+	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Pawn Camera"));
+	Camera->SetupAttachment(SpringArm);
+
+	//Possess Player.
+	AutoPossessPlayer = EAutoReceiveInput::Player0;
 }
 
 // Called when the game starts or when spawned
 void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	APlayerController* PlayerController = Cast<APlayerController>(GetController());
+
+	if (PlayerController) {
+		UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer());
+		Subsystem->AddMappingContext(characterMappingContext, 0);
+	}
 }
 
 // Called every frame
@@ -30,5 +56,32 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+	UEnhancedInputComponent* EIC = Cast<UEnhancedInputComponent>(PlayerInputComponent);
+
+	EIC->BindAction(MoveForwardAction, ETriggerEvent::Triggered, this, &APlayerCharacter::MoveForwardHandler);
+	EIC->BindAction(StrafeAction, ETriggerEvent::Triggered, this, &APlayerCharacter::StrafeHandler);
+	EIC->BindAction(LookUpAction, ETriggerEvent::Triggered, this, &APlayerCharacter::LookUpHandler);
+	EIC->BindAction(TurnAction, ETriggerEvent::Triggered, this, &APlayerCharacter::TurnHandler);
+	EIC->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACharacter::Jump);
+}
+
+void APlayerCharacter::MoveForwardHandler(const FInputActionValue& Value)
+{
+	AddMovementInput(GetActorForwardVector() * Value.Get<float>());
+}
+
+void APlayerCharacter::StrafeHandler(const FInputActionValue& Value)
+{
+	AddMovementInput(GetActorRightVector() * Value.Get<float>());
+}
+
+void APlayerCharacter::LookUpHandler(const FInputActionValue& Value)
+{
+	AddControllerPitchInput(Value.Get<float>());
+}
+
+void APlayerCharacter::TurnHandler(const FInputActionValue& Value)
+{
+	AddControllerYawInput(Value.Get<float>());
 }
 

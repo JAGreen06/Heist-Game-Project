@@ -4,7 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "InputActionValue.h"
 #include "PlayerCharacter.generated.h"
+
+class UCameraComponent;
+class USpringArmComponent;
+class UInputMappingContext;
+class UInputAction;
 
 UCLASS()
 class HEISTGAME_API APlayerCharacter : public ACharacter
@@ -25,5 +31,31 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+private:
+	UPROPERTY(EditAnywhere)
+	USpringArmComponent* SpringArm;
 
+	UPROPERTY(EditAnywhere)
+	UCameraComponent* Camera;
+
+
+	UPROPERTY(EditAnywhere)
+	UInputMappingContext* characterMappingContext;
+	UPROPERTY(EditAnywhere)
+	UInputAction* MoveForwardAction;
+	UPROPERTY(EditAnywhere)
+	UInputAction* StrafeAction;
+	UPROPERTY(EditAnywhere)
+	UInputAction* TurnAction;
+	UPROPERTY(EditAnywhere)
+	UInputAction* LookUpAction;
+	UPROPERTY(EditAnywhere)
+	UInputAction* JumpAction;
+
+
+	//Movement Handler Functions
+	void MoveForwardHandler(const FInputActionValue& Value);
+	void StrafeHandler(const FInputActionValue& Value);
+	void LookUpHandler(const FInputActionValue& Value);
+	void TurnHandler(const FInputActionValue& Value);
 };
