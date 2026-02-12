@@ -9,7 +9,7 @@
 #include "Components/CapsuleComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
-
+#include "GameFramework/CharacterMovementComponent.h"
 
 
 // Sets default values
@@ -62,6 +62,8 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	EIC->BindAction(StrafeAction, ETriggerEvent::Triggered, this, &APlayerCharacter::StrafeHandler);
 	EIC->BindAction(LookUpAction, ETriggerEvent::Triggered, this, &APlayerCharacter::LookUpHandler);
 	EIC->BindAction(TurnAction, ETriggerEvent::Triggered, this, &APlayerCharacter::TurnHandler);
+	EIC->BindAction(SprintAction, ETriggerEvent::Started, this, &APlayerCharacter::SprintHandler);
+	EIC->BindAction(SprintAction, ETriggerEvent::Completed, this, &APlayerCharacter::SprintHandler);
 	EIC->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACharacter::Jump);
 }
 
@@ -83,5 +85,18 @@ void APlayerCharacter::LookUpHandler(const FInputActionValue& Value)
 void APlayerCharacter::TurnHandler(const FInputActionValue& Value)
 {
 	AddControllerYawInput(Value.Get<float>());
+}
+
+void APlayerCharacter::SprintHandler(const FInputActionValue& Value)
+{
+	isSprinting = Value.Get<bool>();
+	if (isSprinting)
+	{
+		GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
+	}
+	else
+	{
+		GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
+	}
 }
 

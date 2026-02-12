@@ -51,11 +51,28 @@ private:
 	UInputAction* LookUpAction;
 	UPROPERTY(EditAnywhere)
 	UInputAction* JumpAction;
+	UPROPERTY(EditAnywhere)
+	UInputAction* SprintAction;
 
+
+	UPROPERTY(EditAnywhere)
+	float WalkSpeed = 600.f;
+
+	UPROPERTY(EditAnywhere)
+	float SprintSpeed = 1000.f;
+
+	UPROPERTY(EditAnywhere)
+	bool isSprinting;
+	
 
 	//Movement Handler Functions
 	void MoveForwardHandler(const FInputActionValue& Value);
 	void StrafeHandler(const FInputActionValue& Value);
 	void LookUpHandler(const FInputActionValue& Value);
 	void TurnHandler(const FInputActionValue& Value);
+	void SprintHandler(const FInputActionValue& Value);
+
+
+
+
 };
