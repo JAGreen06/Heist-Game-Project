@@ -22,7 +22,6 @@ APlayerCharacter::APlayerCharacter()
 	//Spring Arm Setup
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Spring Arm"));
 	SpringArm->SetupAttachment(GetCapsuleComponent());
-	SpringArm->SetRelativeLocation(FVector(0.0f, 8.0f, 70.0f));
 	SpringArm->SetRelativeRotation(FRotator(-40.f, 0.f, 0.f));
 
 	//Camera Setup
@@ -44,11 +43,8 @@ void APlayerCharacter::BeginPlay()
 		Subsystem->AddMappingContext(characterMappingContext, 0);
 	}
 
-	//Maybe move to a seperate function.
 	Weapon = GetWorld()->SpawnActor<ARifle>(RifleClass);
-
 	Weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, FName("RifleSocket"));
-
 }
 
 // Called every frame
@@ -56,6 +52,10 @@ void APlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (GetCharacterMovement()->MaxWalkSpeed == WalkSpeed)
+	{
+		AimDownSight(DeltaTime);
+	}
 }
 
 // Called to bind functionality to input
@@ -65,15 +65,26 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 	UEnhancedInputComponent* EIC = Cast<UEnhancedInputComponent>(PlayerInputComponent);
 
+	//Basic Movement W, A, S, D.
 	EIC->BindAction(MoveForwardAction, ETriggerEvent::Triggered, this, &APlayerCharacter::MoveForwardHandler);
 	EIC->BindAction(StrafeAction, ETriggerEvent::Triggered, this, &APlayerCharacter::StrafeHandler);
 	EIC->BindAction(LookUpAction, ETriggerEvent::Triggered, this, &APlayerCharacter::LookUpHandler);
 	EIC->BindAction(TurnAction, ETriggerEvent::Triggered, this, &APlayerCharacter::TurnHandler);
+
+	//Sprint.
 	EIC->BindAction(SprintAction, ETriggerEvent::Started, this, &APlayerCharacter::SprintHandler);
 	EIC->BindAction(SprintAction, ETriggerEvent::Completed, this, &APlayerCharacter::SprintHandler);
+	
+	//Jump.
 	EIC->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACharacter::Jump);
+
+	//Crouch.
 	EIC->BindAction(CrouchAction, ETriggerEvent::Started, this, &APlayerCharacter::CrouchHandler);
 	EIC->BindAction(CrouchAction, ETriggerEvent::Completed, this, &APlayerCharacter::UnCrouchHandler);
+
+	//ADS.
+	EIC->BindAction(ADSAction, ETriggerEvent::Started, this, &APlayerCharacter::AimHandler);
+	EIC->BindAction(ADSAction, ETriggerEvent::Completed, this, &APlayerCharacter::AimHandler);
 }
 
 void APlayerCharacter::MoveForwardHandler(const FInputActionValue& Value)
@@ -99,7 +110,8 @@ void APlayerCharacter::TurnHandler(const FInputActionValue& Value)
 void APlayerCharacter::SprintHandler(const FInputActionValue& Value)
 {
 	isSprinting = Value.Get<bool>();
-	if (isSprinting)
+	
+	if (isSprinting && !isAiming)
 	{
 		GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
 	}
@@ -117,5 +129,25 @@ void APlayerCharacter::CrouchHandler(const FInputActionValue& Value)
 void APlayerCharacter::UnCrouchHandler(const FInputActionValue& Value)
 {
 	UnCrouch();
+}
+
+void APlayerCharacter::AimHandler(const FInputActionValue& Value)
+{
+	isAiming = Value.Get<bool>();
+}
+
+void APlayerCharacter::AimDownSight(float& DeltaTime)
+{
+	//Smooth Aim Down Sight. (SpringArmLength).
+	float targetArmLength = isAiming ? zoomArmLength : defaultArmLength;
+	SpringArm->TargetArmLength = FMath::FInterpTo(SpringArm->TargetArmLength, targetArmLength, DeltaTime, interpSpeed);
+
+	//Smooth Aim Down Sight. (FOV).
+	float targetFOV = isAiming ? zoomFOV : defaultFOV;
+	Camera->FieldOfView = FMath::FInterpTo(Camera->FieldOfView, targetFOV, DeltaTime, interpSpeed);
+
+	//Smooth Aim Down Sight. (Offset).
+	FVector targetOffset = isAiming ? ZoomOffset : DefaultOffset;
+	SpringArm->SocketOffset = FMath::VInterpTo(SpringArm->SocketOffset, targetOffset, DeltaTime, interpSpeed);
 }
 

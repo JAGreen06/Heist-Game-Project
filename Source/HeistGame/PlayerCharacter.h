@@ -33,6 +33,10 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	UPROPERTY(BlueprintReadOnly)
+	bool isAiming;
+
 private:
 	UPROPERTY(EditAnywhere)
 	USpringArmComponent* SpringArm;
@@ -40,10 +44,29 @@ private:
 	UPROPERTY(EditAnywhere)
 	UCameraComponent* Camera;
 
+
 	UPROPERTY()
 	AActor* Weapon;
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<ARifle> RifleClass;
+
+	UPROPERTY(EditAnywhere)
+	float zoomFOV = 65.0f;
+	UPROPERTY(EditAnywhere)
+	float defaultFOV = 90.0f;
+	UPROPERTY(EditAnywhere)
+	float interpSpeed = 10.0f;
+	UPROPERTY(EditAnywhere)
+	float defaultArmLength = 300.0f;
+	UPROPERTY(EditAnywhere)
+	float zoomArmLength = 150.0f;
+	UPROPERTY(EditAnywhere)
+	FVector DefaultOffset = FVector(0.0f, 70.0f, 70.0f);
+	UPROPERTY(EditAnywhere)
+	FVector ZoomOffset = FVector(0.0f, 50.0f, 70.0f);
+	UPROPERTY(EditAnywhere)
+	UInputAction* ADSAction;
+
 
 	UPROPERTY(EditAnywhere)
 	UInputMappingContext* characterMappingContext;
@@ -82,6 +105,8 @@ private:
 	void CrouchHandler(const FInputActionValue& Value);
 	void UnCrouchHandler(const FInputActionValue& Value);
 
+	void AimHandler(const FInputActionValue& Value);
 
 
+	void AimDownSight(float& DeltaTime);
 };
