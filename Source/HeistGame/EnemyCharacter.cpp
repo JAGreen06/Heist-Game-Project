@@ -35,12 +35,5 @@ void AEnemyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 
 }
 
-AActor* AEnemyCharacter::GetPatrolPoint()
-{
-	if (PatrolPoints.Num() == 0) { return nullptr; }
 
-	AActor* Point = PatrolPoints[index];
-	index = (index + 1) % PatrolPoints.Num();
-	return Point;
-}
 

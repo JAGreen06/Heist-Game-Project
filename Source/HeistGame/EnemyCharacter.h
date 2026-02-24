@@ -34,13 +34,11 @@ private:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<ARifle> RifleClass;
 
-	UPROPERTY(EditInstanceOnly) //Allows each individual enemy to have its own designated patrol points.
-	TArray<AActor*> PatrolPoints;
-
-	UPROPERTY()
-	int index;
 
 public:
-	AActor* GetPatrolPoint();
 
+	UPROPERTY(EditInstanceOnly) //Allows each individual enemy to have its own designated patrol points.
+	TArray<AActor*> PatrolPoints;
+	UPROPERTY()
+	int index;
 };

@@ -25,11 +25,14 @@ void AEnemyAIController::Tick(float DeltaTime)
 
 	if (AController::LineOfSightTo(PlayerPawn) && directionDotProduct > 0)
 	{
-		GetBlackboardComponent()->SetValueAsVector(TEXT("PlayerLocation"), PlayerPawn->GetActorLocation());
+		GetBlackboardComponent()->SetValueAsVector(TEXT("LastKnownPlayerLocation"), PlayerPawn->GetActorLocation());
+		GetBlackboardComponent()->SetValueAsObject(TEXT("TargetPlayer"), PlayerPawn);
+		GetBlackboardComponent()->SetValueAsBool(TEXT("PlayerVisible"), true);
 	}
 	else
 	{
-		GetBlackboardComponent()->ClearValue(TEXT("PlayerLocation"));
+		GetBlackboardComponent()->ClearValue(TEXT("TargetPlayer"));
+		GetBlackboardComponent()->SetValueAsBool(TEXT("PlayerVisible"), false);
 	}
 }
 
@@ -44,27 +47,10 @@ void AEnemyAIController::BeginPlay()
 
 	UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
 	AEnemyCharacter* enemy = Cast<AEnemyCharacter>(GetPawn());
-	AActor* point = enemy->GetPatrolPoint();
-	FVector pointPos = point->GetActorLocation();
-
 
 	if (EnemyBehaviourTree != nullptr)
 	{
 		RunBehaviorTree(EnemyBehaviourTree);
 	}
-
-	if (GetBlackboardComponent())
-	{
-		GetBlackboardComponent()->SetValueAsVector(TEXT("PatrolPoint"), pointPos);
-	}
 }
 
-void AEnemyAIController::Patrol()
-{
-	AEnemyCharacter* enemy = Cast<AEnemyCharacter>(GetPawn());
-	if (enemy)
-	{
-		AActor* point = enemy->GetPatrolPoint();
-		MoveToActor(point, 10.0f);
-	}
-}

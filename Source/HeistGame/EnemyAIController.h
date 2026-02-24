@@ -21,7 +21,6 @@ protected:
 	virtual void BeginPlay() override;
 
 private:
-	void Patrol();
 
 	UPROPERTY(EditAnywhere)
 	UBehaviorTree* EnemyBehaviourTree;
