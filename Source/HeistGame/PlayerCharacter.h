@@ -12,6 +12,8 @@ class USpringArmComponent;
 class UInputMappingContext;
 class UInputAction;
 
+class ARifle;
+
 UCLASS()
 class HEISTGAME_API APlayerCharacter : public ACharacter
 {
@@ -38,6 +40,10 @@ private:
 	UPROPERTY(EditAnywhere)
 	UCameraComponent* Camera;
 
+	UPROPERTY()
+	AActor* Weapon;
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<ARifle> RifleClass;
 
 	UPROPERTY(EditAnywhere)
 	UInputMappingContext* characterMappingContext;
@@ -53,7 +59,8 @@ private:
 	UInputAction* JumpAction;
 	UPROPERTY(EditAnywhere)
 	UInputAction* SprintAction;
-
+	UPROPERTY(EditAnywhere)
+	UInputAction* CrouchAction;
 
 	UPROPERTY(EditAnywhere)
 	float WalkSpeed = 600.f;
@@ -72,6 +79,8 @@ private:
 	void TurnHandler(const FInputActionValue& Value);
 	void SprintHandler(const FInputActionValue& Value);
 
+	void CrouchHandler(const FInputActionValue& Value);
+	void UnCrouchHandler(const FInputActionValue& Value);
 
 
 

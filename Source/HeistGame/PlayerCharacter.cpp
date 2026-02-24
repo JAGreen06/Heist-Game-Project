@@ -11,6 +11,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
+#include "Rifle.h"
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -21,8 +22,8 @@ APlayerCharacter::APlayerCharacter()
 	//Spring Arm Setup
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Spring Arm"));
 	SpringArm->SetupAttachment(GetCapsuleComponent());
-	SpringArm->SetRelativeLocation(FVector(0.0f, 0.0f, 30.0f));
-	SpringArm->SetRelativeRotation(FRotator(-60.f, 0.f, 0.f));
+	SpringArm->SetRelativeLocation(FVector(0.0f, 8.0f, 70.0f));
+	SpringArm->SetRelativeRotation(FRotator(-40.f, 0.f, 0.f));
 
 	//Camera Setup
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Pawn Camera"));
@@ -42,6 +43,12 @@ void APlayerCharacter::BeginPlay()
 		UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer());
 		Subsystem->AddMappingContext(characterMappingContext, 0);
 	}
+
+	//Maybe move to a seperate function.
+	Weapon = GetWorld()->SpawnActor<ARifle>(RifleClass);
+
+	Weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, FName("RifleSocket"));
+
 }
 
 // Called every frame
@@ -65,6 +72,8 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	EIC->BindAction(SprintAction, ETriggerEvent::Started, this, &APlayerCharacter::SprintHandler);
 	EIC->BindAction(SprintAction, ETriggerEvent::Completed, this, &APlayerCharacter::SprintHandler);
 	EIC->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACharacter::Jump);
+	EIC->BindAction(CrouchAction, ETriggerEvent::Started, this, &APlayerCharacter::CrouchHandler);
+	EIC->BindAction(CrouchAction, ETriggerEvent::Completed, this, &APlayerCharacter::UnCrouchHandler);
 }
 
 void APlayerCharacter::MoveForwardHandler(const FInputActionValue& Value)
@@ -98,5 +107,15 @@ void APlayerCharacter::SprintHandler(const FInputActionValue& Value)
 	{
 		GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
 	}
+}
+
+void APlayerCharacter::CrouchHandler(const FInputActionValue& Value)
+{
+	Crouch();
+}
+
+void APlayerCharacter::UnCrouchHandler(const FInputActionValue& Value)
+{
+	UnCrouch();
 }
 
