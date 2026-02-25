@@ -9,22 +9,21 @@
 EBTNodeResult::Type UBTTask_SetNextPatrolPoint::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
     //AIController.
-    AEnemyAIController* AIController = Cast<AEnemyAIController>(OwnerComp.GetAIOwner());
-    if (!AIController) { return EBTNodeResult::Failed; }
+    if (AEnemyAIController* AIController = Cast<AEnemyAIController>(OwnerComp.GetAIOwner())) // if cast succeeds
+    {
+        if(AEnemyCharacter* Enemy = Cast<AEnemyCharacter>(AIController->GetPawn())) //if cast succeeds
+        {
+            if (Enemy->PatrolPoints.Num() > 0) //if patrol points array is populated
+            { 
+                AActor* NextPoint = Enemy->PatrolPoints[Enemy->index]; //Next point is set to the point at index.
+                Enemy->index = (Enemy->index + 1) % Enemy->PatrolPoints.Num(); // Index is set to the next index, or loops to one if index is at end.
 
-    //Enemy Character.
-    AEnemyCharacter* Enemy = Cast<AEnemyCharacter>(AIController->GetPawn());
-    if (!Enemy) { return EBTNodeResult::Failed; }
+                FVector NextPointLocation = NextPoint->GetActorLocation(); //Get Point Location.
 
-    //Make sure there are patrolPoints.
-    if (Enemy->PatrolPoints.Num() == 0) { return EBTNodeResult::Failed; }
-
-    AActor* NextPoint = Enemy->PatrolPoints[Enemy->index];
-    Enemy->index = (Enemy->index + 1) % Enemy->PatrolPoints.Num();
-
-    FVector NextPointLocation = NextPoint->GetActorLocation();
-
-    OwnerComp.GetBlackboardComponent()->SetValueAsVector(FName("PatrolPoint"), NextPointLocation);
-
-    return EBTNodeResult::Succeeded;
+                OwnerComp.GetBlackboardComponent()->SetValueAsVector(GetSelectedBlackboardKey(), NextPointLocation); //Sets blackboard key to point location.
+                return EBTNodeResult::Succeeded;
+            }
+        }
+    }
+    return EBTNodeResult::Failed;
 }
