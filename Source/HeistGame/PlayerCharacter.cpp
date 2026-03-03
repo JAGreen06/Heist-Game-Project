@@ -151,3 +151,13 @@ void APlayerCharacter::AimDownSight(float& DeltaTime)
 	SpringArm->SocketOffset = FMath::VInterpTo(SpringArm->SocketOffset, targetOffset, DeltaTime, interpSpeed);
 }
 
+void APlayerCharacter::SetCarryingJewel(bool isCarrying)
+{
+	isCarryingJewel = isCarrying;
+}
+
+bool APlayerCharacter::GetCarryingJewel()
+{
+	return isCarryingJewel;
+}
+

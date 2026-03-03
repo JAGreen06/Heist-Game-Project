@@ -94,6 +94,9 @@ private:
 	UPROPERTY(EditAnywhere)
 	bool isSprinting;
 	
+	UPROPERTY()
+	bool isCarryingJewel = false;
+
 
 	//Movement Handler Functions
 	void MoveForwardHandler(const FInputActionValue& Value);
@@ -109,4 +112,8 @@ private:
 
 
 	void AimDownSight(float& DeltaTime);
+
+public:
+	void SetCarryingJewel(bool isCarrying);
+	bool GetCarryingJewel();
 };

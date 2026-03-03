@@ -13,5 +13,12 @@ UCLASS()
 class HEISTGAME_API ACharacterController : public APlayerController
 {
 	GENERATED_BODY()
-	
+protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+private:
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UUserWidget> HUDWidgetClass;
+	UPROPERTY()
+	UUserWidget* HUD;
 };
