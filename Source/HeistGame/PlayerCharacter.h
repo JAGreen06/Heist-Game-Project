@@ -115,5 +115,6 @@ private:
 
 public:
 	void SetCarryingJewel(bool isCarrying);
+	UFUNCTION(BlueprintCallable)
 	bool GetCarryingJewel();
 };
