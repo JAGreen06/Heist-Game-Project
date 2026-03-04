@@ -94,6 +94,10 @@ private:
 	UPROPERTY(EditAnywhere)
 	bool isSprinting;
 	
+	UPROPERTY(EditAnywhere)
+	UInputAction* FireAction;
+
+
 	UPROPERTY()
 	bool isCarryingJewel = false;
 
@@ -109,8 +113,7 @@ private:
 	void UnCrouchHandler(const FInputActionValue& Value);
 
 	void AimHandler(const FInputActionValue& Value);
-
-
+	void FireHandler();
 	void AimDownSight(float& DeltaTime);
 
 public:

@@ -155,7 +155,6 @@ void APlayerCharacter::FireHandler()
 
 	if (hit)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Hit Component: %s"), *Hit.GetComponent()->GetName());
 		if (Hit.GetActor())
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Hit Actor: %s"), *Hit.GetActor()->GetName());
