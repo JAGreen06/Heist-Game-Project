@@ -96,6 +96,9 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	UInputAction* FireAction;
+	UPROPERTY(EditAnywhere)
+	UInputAction* ReloadAction;
+
 
 	bool isCarryingJewel = false;
 
@@ -105,8 +108,11 @@ private:
 	UPROPERTY()
 	FHitResult Hit;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly)
+	int maxShots = 20;	
+
 	float shotDamage = 10.0f;
+	
 
 	float castRange = 10000.0f;
 	FVector cameraLocation;
@@ -128,13 +134,19 @@ private:
 	void AimHandler(const FInputActionValue& Value);
 	void AimDownSight(float& DeltaTime);
 	void FireHandler();
-
+	void ReloadHandler(const FInputActionValue& Value);
 public:
 
+	//Jewel Carrying.
 	void SetCarryingJewel(bool isCarrying) { isCarryingJewel = isCarrying; }
 	UFUNCTION(BlueprintCallable)
 	bool GetCarryingJewel() { return isCarryingJewel; }
 
+	//Shot Count.
+	UPROPERTY(BlueprintReadOnly)
+	int shotCount = maxShots;
+
+	//Player ADS.
 	UPROPERTY(BlueprintReadOnly)
 	bool isAiming;
 

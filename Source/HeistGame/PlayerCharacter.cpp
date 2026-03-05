@@ -54,6 +54,7 @@ void APlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	//Check that character is walking, not sprinting.
 	if (GetCharacterMovement()->MaxWalkSpeed == WalkSpeed)
 	{
 		AimDownSight(DeltaTime);
@@ -73,23 +74,26 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	EIC->BindAction(LookUpAction, ETriggerEvent::Triggered, this, &APlayerCharacter::LookUpHandler);
 	EIC->BindAction(TurnAction, ETriggerEvent::Triggered, this, &APlayerCharacter::TurnHandler);
 
-	//Sprint.
+	//Sprint SHIFT.
 	EIC->BindAction(SprintAction, ETriggerEvent::Started, this, &APlayerCharacter::SprintHandler);
 	EIC->BindAction(SprintAction, ETriggerEvent::Completed, this, &APlayerCharacter::SprintHandler);
 	
-	//Jump.
-	EIC->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACharacter::Jump);
+	//Jump SPACE.
+	EIC->BindAction(JumpAction, ETriggerEvent::Started, this, &ACharacter::Jump);
 
-	//Crouch.
+	//Crouch LEFT CTRL.
 	EIC->BindAction(CrouchAction, ETriggerEvent::Started, this, &APlayerCharacter::CrouchHandler);
 	EIC->BindAction(CrouchAction, ETriggerEvent::Completed, this, &APlayerCharacter::UnCrouchHandler);
 
-	//ADS.
+	//ADS RIGHT CLICK.
 	EIC->BindAction(ADSAction, ETriggerEvent::Started, this, &APlayerCharacter::AimHandler);
 	EIC->BindAction(ADSAction, ETriggerEvent::Completed, this, &APlayerCharacter::AimHandler);
 
-	//Shooting.
+	//Shooting LEFT CLICK.
 	EIC->BindAction(FireAction, ETriggerEvent::Completed, this, &APlayerCharacter::FireHandler);
+
+	//Reloading R.
+	EIC->BindAction(ReloadAction, ETriggerEvent::Completed, this, &APlayerCharacter::ReloadHandler);
 }
 
 void APlayerCharacter::MoveForwardHandler(const FInputActionValue& Value)
@@ -169,8 +173,9 @@ void APlayerCharacter::FireHandler()
 	// Returns a boolean.
 	// Pass in a FHitResult, The cameraLocation as the start location,
 	// The Position where the line trace should finish, and the channel type.
-	if (isAiming)
-	{
+	if (isAiming && shotCount > 0)
+	{		
+		shotCount--;
 		hitDetected = GetWorld()->LineTraceSingleByChannel(Hit, cameraLocation, End, ECC_Visibility);
 
 		//Debug Line.
@@ -184,10 +189,16 @@ void APlayerCharacter::FireHandler()
 		if (Hit.GetActor())
 		{
 			AController* EventInstigator = nullptr;
+			//Applys damage to the actor that has been hit.
 			UGameplayStatics::ApplyDamage(Hit.GetActor(), shotDamage, EventInstigator, this, UDamageType::StaticClass());
 			UE_LOG(LogTemp, Warning, TEXT("Hit Actor: %s"), *Hit.GetActor()->GetName());
 		}
 	}
+}
+
+void APlayerCharacter::ReloadHandler(const FInputActionValue& Value)
+{
+	shotCount = maxShots;
 }
 
 
