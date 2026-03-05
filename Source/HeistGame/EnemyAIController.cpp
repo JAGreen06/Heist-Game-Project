@@ -22,11 +22,10 @@ void AEnemyAIController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
-
 	if (EnemyBehaviourTree != nullptr)
 	{
 		RunBehaviorTree(EnemyBehaviourTree);
+		BlackboardComp = GetBlackboardComponent();
 	}
 }
 

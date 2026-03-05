@@ -10,8 +10,10 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 #include "Rifle.h"
+#include "CharacterController.h"
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -36,15 +38,15 @@ APlayerCharacter::APlayerCharacter()
 void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	APlayerController* PlayerController = Cast<APlayerController>(GetController());
+	ControllerRef = Cast<ACharacterController>(GetController());
 
-	if (PlayerController) {
-		UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer());
+	if (ControllerRef) {
+		UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(ControllerRef->GetLocalPlayer());
 		Subsystem->AddMappingContext(characterMappingContext, 0);
 	}
 
 	Weapon = GetWorld()->SpawnActor<ARifle>(RifleClass);
-	Weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, FName("RifleSocket"));
+	Weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, TEXT("RifleSocket"));
 }
 
 // Called every frame
@@ -85,6 +87,8 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	//ADS.
 	EIC->BindAction(ADSAction, ETriggerEvent::Started, this, &APlayerCharacter::AimHandler);
 	EIC->BindAction(ADSAction, ETriggerEvent::Completed, this, &APlayerCharacter::AimHandler);
+
+	//Shooting.
 	EIC->BindAction(FireAction, ETriggerEvent::Completed, this, &APlayerCharacter::FireHandler);
 }
 
@@ -137,31 +141,6 @@ void APlayerCharacter::AimHandler(const FInputActionValue& Value)
 	isAiming = Value.Get<bool>();
 }
 
-void APlayerCharacter::FireHandler()
-{
-	AController* controllerRef = GetController();
-	FVector cameraLocation;
-	FRotator cameraRotation;
-	controllerRef->GetPlayerViewPoint(cameraLocation, cameraRotation);
-
-	float castRange = 10000.0f;
-	FVector End = cameraLocation + cameraRotation.Vector() * castRange;
-	FHitResult Hit;
-
-	bool hit = GetWorld()->LineTraceSingleByChannel(Hit, cameraLocation, End, ECC_Visibility);
-
-	FColor LineColor = hit ? FColor::Red : FColor::Green;
-	DrawDebugLine(GetWorld(), cameraLocation, End, LineColor, false, 0.1f, 0, 1.0f);
-
-	if (hit)
-	{
-		if (Hit.GetActor())
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Hit Actor: %s"), *Hit.GetActor()->GetName());
-		}
-	}
-}
-
 void APlayerCharacter::AimDownSight(float& DeltaTime)
 {
 	//Smooth Aim Down Sight. (SpringArmLength).
@@ -177,13 +156,38 @@ void APlayerCharacter::AimDownSight(float& DeltaTime)
 	SpringArm->SocketOffset = FMath::VInterpTo(SpringArm->SocketOffset, targetOffset, DeltaTime, interpSpeed);
 }
 
-void APlayerCharacter::SetCarryingJewel(bool isCarrying)
+void APlayerCharacter::FireHandler()
 {
-	isCarryingJewel = isCarrying;
+	//Gets the position of the players camera.
+	ControllerRef->GetPlayerViewPoint(cameraLocation, cameraRotation);
+
+	// Calulates where the linetrace should finish.
+	// It starts from the camera position,
+	// moving along the camera vectors rotation for a length of cast range.
+	FVector End = cameraLocation + cameraRotation.Vector() * castRange;
+
+	// Returns a boolean.
+	// Pass in a FHitResult, The cameraLocation as the start location,
+	// The Position where the line trace should finish, and the channel type.
+	if (isAiming)
+	{
+		hitDetected = GetWorld()->LineTraceSingleByChannel(Hit, cameraLocation, End, ECC_Visibility);
+
+		//Debug Line.
+		FColor LineColor = hitDetected ? FColor::Red : FColor::Green;
+		DrawDebugLine(GetWorld(), cameraLocation, End, LineColor, false, 0.1f, 0, 1.0f);
+	}
+
+	//if we have hit and, if we have hit an actor.
+	if (hitDetected)
+	{
+		if (Hit.GetActor())
+		{
+			AController* EventInstigator = nullptr;
+			UGameplayStatics::ApplyDamage(Hit.GetActor(), shotDamage, EventInstigator, this, UDamageType::StaticClass());
+			UE_LOG(LogTemp, Warning, TEXT("Hit Actor: %s"), *Hit.GetActor()->GetName());
+		}
+	}
 }
 
-bool APlayerCharacter::GetCarryingJewel()
-{
-	return isCarryingJewel;
-}
 

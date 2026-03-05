@@ -20,7 +20,7 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -34,9 +34,17 @@ private:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<ARifle> RifleClass;
 
+
+	UPROPERTY(EditAnywhere, Category = "Health")
+	float EnemyHealth = 100.0f;
+
 public:
 	UPROPERTY(EditInstanceOnly) //Allows each individual enemy to have its own designated patrol points.
 	TArray<AActor*> PatrolPoints;
 	UPROPERTY()
 	int index;
+
+	UPROPERTY(BlueprintReadOnly)
+	bool isDead = false;
+
 };

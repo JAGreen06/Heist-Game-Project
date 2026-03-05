@@ -21,6 +21,20 @@ void AEnemyCharacter::BeginPlay()
 	Weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, FName("RifleSocket"));
 }
 
+float AEnemyCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	EnemyHealth -= DamageAmount;
+
+	UE_LOG(LogTemp, Warning, TEXT("Health: %f"), EnemyHealth);
+
+	if (EnemyHealth <= 0)
+	{
+		isDead = true;
+	}
+
+	return DamageAmount;
+}
+
 // Called every frame
 void AEnemyCharacter::Tick(float DeltaTime)
 {

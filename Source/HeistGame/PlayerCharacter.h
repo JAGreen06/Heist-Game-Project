@@ -13,6 +13,7 @@ class UInputMappingContext;
 class UInputAction;
 
 class ARifle;
+class ACharacterController;
 
 UCLASS()
 class HEISTGAME_API APlayerCharacter : public ACharacter
@@ -34,22 +35,19 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	UPROPERTY(BlueprintReadOnly)
-	bool isAiming;
-
 private:
-	UPROPERTY(EditAnywhere)
-	USpringArmComponent* SpringArm;
-
-	UPROPERTY(EditAnywhere)
-	UCameraComponent* Camera;
-
-
+	//Weapon Variables.
 	UPROPERTY()
 	AActor* Weapon;
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<ARifle> RifleClass;
 
+
+	//Camera and ADS variables.
+	UPROPERTY(EditAnywhere)
+	USpringArmComponent* SpringArm;
+	UPROPERTY(EditAnywhere)
+	UCameraComponent* Camera;
 	UPROPERTY(EditAnywhere)
 	float zoomFOV = 65.0f;
 	UPROPERTY(EditAnywhere)
@@ -68,6 +66,7 @@ private:
 	UInputAction* ADSAction;
 
 
+	//Movement inputs.
 	UPROPERTY(EditAnywhere)
 	UInputMappingContext* characterMappingContext;
 	UPROPERTY(EditAnywhere)
@@ -85,39 +84,58 @@ private:
 	UPROPERTY(EditAnywhere)
 	UInputAction* CrouchAction;
 
+
+	//Sprint Variables.
 	UPROPERTY(EditAnywhere)
 	float WalkSpeed = 600.f;
-
 	UPROPERTY(EditAnywhere)
 	float SprintSpeed = 1000.f;
-
 	UPROPERTY(EditAnywhere)
 	bool isSprinting;
 	
+
 	UPROPERTY(EditAnywhere)
 	UInputAction* FireAction;
 
-
-	UPROPERTY()
 	bool isCarryingJewel = false;
 
+	
+	UPROPERTY()
+	ACharacterController* ControllerRef;
+	UPROPERTY()
+	FHitResult Hit;
 
-	//Movement Handler Functions
+	UPROPERTY(EditAnywhere)
+	float shotDamage = 10.0f;
+
+	float castRange = 10000.0f;
+	FVector cameraLocation;
+	FRotator cameraRotation;
+	bool hitDetected;
+
+	//Movement Handling.
 	void MoveForwardHandler(const FInputActionValue& Value);
 	void StrafeHandler(const FInputActionValue& Value);
 	void LookUpHandler(const FInputActionValue& Value);
 	void TurnHandler(const FInputActionValue& Value);
 	void SprintHandler(const FInputActionValue& Value);
 
+	//Crouch Handling.
 	void CrouchHandler(const FInputActionValue& Value);
 	void UnCrouchHandler(const FInputActionValue& Value);
 
+	//Aim / Shooting Handling.
 	void AimHandler(const FInputActionValue& Value);
-	void FireHandler();
 	void AimDownSight(float& DeltaTime);
+	void FireHandler();
 
 public:
-	void SetCarryingJewel(bool isCarrying);
+
+	void SetCarryingJewel(bool isCarrying) { isCarryingJewel = isCarrying; }
 	UFUNCTION(BlueprintCallable)
-	bool GetCarryingJewel();
+	bool GetCarryingJewel() { return isCarryingJewel; }
+
+	UPROPERTY(BlueprintReadOnly)
+	bool isAiming;
+
 };

@@ -5,10 +5,12 @@
 #include "CoreMinimal.h"
 #include "AIController.h"
 #include "EnemyAIController.generated.h"
-
 /**
  * 
  */
+
+class UBlackboardComponent;
+
 UCLASS()
 class HEISTGAME_API AEnemyAIController : public AAIController
 {
@@ -21,6 +23,9 @@ protected:
 	virtual void BeginPlay() override;
 
 private:
+
+	UPROPERTY()
+	UBlackboardComponent* BlackboardComp;
 
 	UPROPERTY(EditAnywhere)
 	UBehaviorTree* EnemyBehaviourTree;
