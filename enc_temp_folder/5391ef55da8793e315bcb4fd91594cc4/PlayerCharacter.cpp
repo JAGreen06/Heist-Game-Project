@@ -58,8 +58,8 @@ float APlayerCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Damag
 	if (PlayerHealth <= 0)
 	{
 		PlayerDead = true;
-		APawn* myPawn = UGameplayStatics::GetPlayerPawn(this, 0);
-		myPawn->DisableInput(UGameplayStatics::GetPlayerController(this, 0)); 
+		APawn* myPawn = UGameplayStatics::GetPlayerPawn(this, 0); //Gets the current pawn on the level, with player controller 0.
+		myPawn->DisableInput(UGameplayStatics::GetPlayerController(this, 0)); //Disables the input for the player.
 	}
 
 	return DamageAmount;
