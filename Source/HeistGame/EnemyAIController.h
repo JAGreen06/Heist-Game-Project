@@ -18,7 +18,6 @@ class HEISTGAME_API AEnemyAIController : public AAIController
 public:
 	virtual void Tick(float DeltaTime) override;
 
-	void OnMoveCompleted(FAIRequestID RequestID, const FPathFollowingResult& Result) override;
 protected:
 	virtual void BeginPlay() override;
 
@@ -29,5 +28,5 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	UBehaviorTree* EnemyBehaviourTree;
-
+	
 };

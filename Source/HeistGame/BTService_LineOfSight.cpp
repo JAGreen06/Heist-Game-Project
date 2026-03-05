@@ -20,14 +20,19 @@ void UBTService_LineOfSight::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* 
 	FVector	AItoPlayerVector = PlayerPositionVector - AIPositionVector;
 	AItoPlayerVector.Normalize();
 
-	float directionDotProduct = FVector::DotProduct(AItoPlayerVector, AIForwardVector);
 
-	if (AIController->LineOfSightTo(PlayerChar) && directionDotProduct > 0)
+	float distanceToPlayer = FVector::Dist(Enemy->GetActorLocation(), PlayerChar->GetActorLocation());
+	float directionDotProduct = FVector::DotProduct(AItoPlayerVector, AIForwardVector);	
+	
+	if (AIController->LineOfSightTo(PlayerChar) && directionDotProduct > 0.5f && distanceToPlayer < 1500.0f)
 	{
 		OwnerComp.GetBlackboardComponent()->SetValueAsBool(GetSelectedBlackboardKey(), true);
+		Enemy->enemyAiming = true;
 	}
 	else
 	{
+		Enemy->enemyAiming = false;
 		OwnerComp.GetBlackboardComponent()->ClearValue(GetSelectedBlackboardKey());
 	}
+	
 }

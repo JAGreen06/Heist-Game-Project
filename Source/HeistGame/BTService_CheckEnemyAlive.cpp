@@ -16,8 +16,8 @@ void UBTService_CheckEnemyAlive::TickNode(UBehaviorTreeComponent& OwnerComp, uin
 
 	if (Enemy->isDead)
 	{
+		Enemy->enemyAiming = false;
 		OwnerComp.GetBlackboardComponent()->SetValueAsBool(GetSelectedBlackboardKey(), true);
-		return;
 	}
 	else
 	{

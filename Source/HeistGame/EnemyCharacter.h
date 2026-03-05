@@ -7,7 +7,8 @@
 #include "EnemyCharacter.generated.h"
 
 class ARifle;
-
+class AEnemyAIController;
+class UBrainComponent;
 UCLASS()
 class HEISTGAME_API AEnemyCharacter : public ACharacter
 {
@@ -38,6 +39,11 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Health")
 	float EnemyHealth = 100.0f;
 
+	UPROPERTY()
+	UBrainComponent* BrainComp;
+	UPROPERTY()
+	AEnemyAIController* AIController;
+
 public:
 	UPROPERTY(EditInstanceOnly) //Allows each individual enemy to have its own designated patrol points.
 	TArray<AActor*> PatrolPoints;
@@ -46,5 +52,7 @@ public:
 
 	UPROPERTY(BlueprintReadOnly)
 	bool isDead = false;
+	UPROPERTY(BlueprintReadOnly)
+	bool enemyAiming = false;
 
 };
