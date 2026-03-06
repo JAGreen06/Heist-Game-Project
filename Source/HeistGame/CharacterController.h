@@ -9,6 +9,8 @@
  * 
  */
 
+class AExtractionPoint;
+
 UCLASS()
 class HEISTGAME_API ACharacterController : public APlayerController
 {
@@ -21,4 +23,19 @@ private:
 	TSubclassOf<UUserWidget> HUDWidgetClass;
 	UPROPERTY()
 	UUserWidget* HUD;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UUserWidget> ExtractionTimeClass;
+	UPROPERTY()
+	UUserWidget* EXTRACTIONTIME;
+
+	UPROPERTY()
+	FTimerHandle ExtractionTimeLeft;
+
+	UFUNCTION(BlueprintPure)
+	float GetTimeTillExtract();
+
+public:
+	UPROPERTY()
+	AExtractionPoint* ExtractionRef;
 };

@@ -3,3 +3,10 @@
 
 #include "HeistGameMode.h"
 
+void AHeistGameMode::GameOver(bool over)
+{
+	if (over)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Extraction Sucessful"));
+	}
+}

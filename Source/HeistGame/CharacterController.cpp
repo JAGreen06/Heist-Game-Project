@@ -3,6 +3,8 @@
 
 #include "CharacterController.h"
 #include "Blueprint/UserWidget.h"
+#include "Kismet/GameplayStatics.h"
+#include "ExtractionPoint.h"
 
 void ACharacterController::BeginPlay()
 {
@@ -13,4 +15,21 @@ void ACharacterController::BeginPlay()
 		HUD = CreateWidget(this, HUDWidgetClass);
 		if (HUD) { HUD->AddToViewport(); }
 	}
+
+	if (ExtractionTimeClass)
+	{
+		EXTRACTIONTIME = CreateWidget(this, ExtractionTimeClass);
+		if (EXTRACTIONTIME) { EXTRACTIONTIME->AddToViewport(); }
+	}
+
+}
+
+float ACharacterController::GetTimeTillExtract()
+{
+	if (!ExtractionRef) { 
+		return 0.0f; 
+	}
+
+	ExtractionRef->GetExtractionTimer(ExtractionTimeLeft);
+	return GetWorld()->GetTimerManager().GetTimerRemaining(ExtractionTimeLeft);
 }

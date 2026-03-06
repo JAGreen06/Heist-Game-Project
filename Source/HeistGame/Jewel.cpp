@@ -5,6 +5,7 @@
 #include "Components/SphereComponent.h"
 #include "PlayerCharacter.h"
 #include "Kismet/GameplayStatics.h"
+#include "ExtractionPoint.h"
 
 // Sets default values
 AJewel::AJewel()
@@ -47,6 +48,7 @@ void AJewel::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherAc
 	characterRef->SetCarryingJewel(true);
 	Destroy();
 }
+
 
 
 

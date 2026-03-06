@@ -199,9 +199,10 @@ void APlayerCharacter::FireHandler()
 		DrawDebugLine(GetWorld(), cameraLocation, End, LineColor, false, 0.1f, 0, 1.0f);
 	}
 
-	//if we have hit and, if we have hit an actor.
+	//if we have hit something.
 	if (hitDetected)
 	{
+		//if we hit an actor.
 		if (Hit.GetActor())
 		{
 			//Applys damage to the actor that has been hit.
