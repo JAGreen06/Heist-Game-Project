@@ -2,11 +2,16 @@
 
 
 #include "HeistGameMode.h"
+#include "Kismet/GameplayStatics.h"
 
-void AHeistGameMode::GameOver(bool over)
+void AHeistGameMode::LevelComplete(bool success)
 {
-	if (over)
+	if (success)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Extraction Sucessful"));
+		UGameplayStatics::OpenLevel(GetWorld(), NextLevelName);
+	}
+	else
+	{
+
 	}
 }

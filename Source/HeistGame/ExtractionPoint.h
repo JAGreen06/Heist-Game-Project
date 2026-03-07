@@ -39,6 +39,7 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Extract")
 	USceneComponent* SceneMarker;
 
+
 	UPROPERTY()
 	AHeistGameMode* GamemodeRef;
 	UPROPERTY()

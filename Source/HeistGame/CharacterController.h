@@ -29,6 +29,14 @@ private:
 	UPROPERTY()
 	UUserWidget* EXTRACTIONTIME;
 
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UUserWidget> NextLevelClass;
+	UPROPERTY()
+	UUserWidget* NEXT;
+
+
+
+
 	UPROPERTY()
 	FTimerHandle ExtractionTimeLeft;
 
@@ -36,6 +44,9 @@ private:
 	float GetTimeTillExtract();
 
 public:
+
+	void ShowNextLevelScreen();
+
 	UPROPERTY()
 	AExtractionPoint* ExtractionRef;
 };

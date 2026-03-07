@@ -13,7 +13,12 @@ UCLASS()
 class HEISTGAME_API AHeistGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
-	
-public: 
-	void GameOver(bool over);
+
+public:
+	UFUNCTION(BlueprintCallable)
+	void LevelComplete(bool success);
+
+	UPROPERTY(EditAnywhere, Category = "Levels")
+	FName NextLevelName;
+private:
 };

@@ -54,7 +54,9 @@ void AExtractionPoint::GetExtractionTimer(FTimerHandle& TimeLeft)
 
 void AExtractionPoint::ExtractionSuccess()
 {
-	GamemodeRef->GameOver(true);
+	APawn* myPawn = UGameplayStatics::GetPlayerPawn(this, 0);
+	myPawn->DisableInput(UGameplayStatics::GetPlayerController(this, 0)); 
+	ControllerRef->ShowNextLevelScreen();
 }
 
 void AExtractionPoint::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
@@ -65,7 +67,6 @@ void AExtractionPoint::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActo
 	ControllerRef = Cast<ACharacterController>(PlayerRef->GetController());
 	if (!ControllerRef) { return; }
 	
-
 	//Set the extraction point in CharacterController to this ExtractionPoint.
 	ControllerRef->ExtractionRef = this;
 	//Start Extraction time countdown.

@@ -22,6 +22,11 @@ void ACharacterController::BeginPlay()
 		if (EXTRACTIONTIME) { EXTRACTIONTIME->AddToViewport(); }
 	}
 
+	if (NextLevelClass)
+	{
+		NEXT = CreateWidget(this, NextLevelClass);		
+	}
+
 }
 
 float ACharacterController::GetTimeTillExtract()
@@ -32,4 +37,14 @@ float ACharacterController::GetTimeTillExtract()
 
 	ExtractionRef->GetExtractionTimer(ExtractionTimeLeft);
 	return GetWorld()->GetTimerManager().GetTimerRemaining(ExtractionTimeLeft);
+}
+
+void ACharacterController::ShowNextLevelScreen()
+{
+	if (EXTRACTIONTIME) { EXTRACTIONTIME->RemoveFromViewport(); }
+
+	if (NEXT) { NEXT->AddToViewport(); }
+
+	SetShowMouseCursor(true);
+	SetPause(true);
 }
