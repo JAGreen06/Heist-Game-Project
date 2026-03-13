@@ -61,12 +61,16 @@ void AExtractionPoint::ExtractionSuccess()
 
 void AExtractionPoint::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {	
+	
 	//Need to make sure that it is the player in the extraction zone.
 	PlayerRef = Cast<APlayerCharacter>(OtherActor);
 	if (!PlayerRef) { return; }
 	ControllerRef = Cast<ACharacterController>(PlayerRef->GetController());
 	if (!ControllerRef) { return; }
-	
+
+	//Need to make sure the player has the jewel before extracting.
+	if (!PlayerRef->GetCarryingJewel()) { return; }
+
 	//Set the extraction point in CharacterController to this ExtractionPoint.
 	ControllerRef->ExtractionRef = this;
 	//Start Extraction time countdown.

@@ -18,7 +18,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void LevelComplete(bool success);
 
+private:
 	UPROPERTY(EditAnywhere, Category = "Levels")
 	FName NextLevelName;
-private:
+	
 };

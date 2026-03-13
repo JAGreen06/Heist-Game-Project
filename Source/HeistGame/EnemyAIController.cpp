@@ -7,6 +7,7 @@
 #include "PlayerCharacter.h"
 
 #include "BehaviorTree/BlackboardComponent.h"
+#include "BrainComponent.h"
 
 void AEnemyAIController::Tick(float DeltaTime)
 {
@@ -29,13 +30,23 @@ void AEnemyAIController::Tick(float DeltaTime)
 void AEnemyAIController::BeginPlay()
 {
 	Super::BeginPlay();
-	if (EnemyBehaviourTree != nullptr)
+	if (DefaultBehaviourTree != nullptr)
 	{
-		RunBehaviorTree(EnemyBehaviourTree);
-		
-		BlackboardComp = GetBlackboardComponent();
+		RunBehaviorTree(DefaultBehaviourTree);		
+		BlackboardComp = GetBlackboardComponent();		
 	}
 		
 	
+}
+
+void AEnemyAIController::SwitchBehaviourTree(UBehaviorTree* NextTree)
+{
+	if (!NextTree) { return; }
+
+	GetBrainComponent()->StopLogic("Switching Tree");
+	RunBehaviorTree(NextTree);
+	BlackboardComp = GetBlackboardComponent();
+	UE_LOG(LogTemp, Warning, TEXT("Switching to tree"));
+
 }
 

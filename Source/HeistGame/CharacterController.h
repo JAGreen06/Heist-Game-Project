@@ -34,9 +34,6 @@ private:
 	UPROPERTY()
 	UUserWidget* NEXT;
 
-
-
-
 	UPROPERTY()
 	FTimerHandle ExtractionTimeLeft;
 

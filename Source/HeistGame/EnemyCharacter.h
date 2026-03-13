@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "EnemyCharacter.generated.h"
 
+
 class ARifle;
 
 UCLASS()
@@ -48,9 +49,9 @@ public:
 	bool isDead = false;
 	UPROPERTY(BlueprintReadOnly)
 	bool enemyAiming = false;
-
-
-	float enemyShotDamage = 10.0f;
-
-
+	UPROPERTY()
+	bool isAgressive = false;
+	UPROPERTY()
+	bool enemyDamaged = false;
+	float enemyShotDamage = 10.0f;	
 };

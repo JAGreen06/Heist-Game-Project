@@ -17,6 +17,7 @@ class HEISTGAME_API AEnemyAIController : public AAIController
 	GENERATED_BODY()
 public:
 	virtual void Tick(float DeltaTime) override;
+	void SwitchBehaviourTree(UBehaviorTree* NextTree);
 
 protected:
 	virtual void BeginPlay() override;
@@ -26,7 +27,11 @@ private:
 	UPROPERTY()
 	UBlackboardComponent* BlackboardComp;
 
-	UPROPERTY(EditAnywhere)
-	UBehaviorTree* EnemyBehaviourTree;
-	
+public:
+
+	UPROPERTY(EditDefaultsOnly, Category = "AI")
+	UBehaviorTree* DefaultBehaviourTree;
+	UPROPERTY(EditDefaultsOnly, Category = "AI")
+	UBehaviorTree* AgressiveBehaviourTree;	
+
 };

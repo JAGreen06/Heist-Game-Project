@@ -25,7 +25,7 @@ EBTNodeResult::Type UBTTask_ShootPlayer::ExecuteTask(UBehaviorTreeComponent& Own
 
 				FVector Start = Enemy->GetMesh()->GetSocketLocation(TEXT("RifleSocket"));
 					
-				FVector End = Start + Enemy->GetActorForwardVector() * 10000.0f;
+				FVector End = Player->GetActorLocation();
 				bool hitDetected = GetWorld()->LineTraceSingleByChannel(Hit, Start, End, ECC_Visibility, Params);
 
 				//Debug Line.

@@ -24,6 +24,7 @@ void AEnemyCharacter::BeginPlay()
 float AEnemyCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
 	EnemyHealth -= DamageAmount;
+	enemyDamaged = true;
 
 	UE_LOG(LogTemp, Warning, TEXT("Health: %f"), EnemyHealth);
 

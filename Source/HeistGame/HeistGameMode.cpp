@@ -12,6 +12,6 @@ void AHeistGameMode::LevelComplete(bool success)
 	}
 	else
 	{
-
+		//Show a fail level screen, retry, quit etc.
 	}
 }
