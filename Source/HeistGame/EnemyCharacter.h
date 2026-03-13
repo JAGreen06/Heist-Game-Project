@@ -54,4 +54,7 @@ public:
 
 	float ShotDamage = 10.0f;	
 	float MeleeDamage = 5.0f;
+
+	UPROPERTY()
+	FRotator GuardRotation;	
 };

@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "BehaviorTree/Tasks/BTTask_BlackboardBase.h"
-#include "BTTask_MeleePlayer.generated.h"
+#include "BehaviorTree/BTTaskNode.h"
+#include "BTTask_SetGuardRotation.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class HEISTGAME_API UBTTask_MeleePlayer : public UBTTask_BlackboardBase
+class HEISTGAME_API UBTTask_SetGuardRotation : public UBTTaskNode
 {
 	GENERATED_BODY()
 public:

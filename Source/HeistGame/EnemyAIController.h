@@ -21,11 +21,13 @@ public:
 
 protected:
 	virtual void BeginPlay() override;
+	virtual void OnPossess(APawn* InPawn) override;
 
 private:
 
 	UPROPERTY()
 	UBlackboardComponent* BlackboardComp;
+
 
 public:
 

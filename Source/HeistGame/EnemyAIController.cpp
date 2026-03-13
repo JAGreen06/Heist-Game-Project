@@ -29,13 +29,28 @@ void AEnemyAIController::Tick(float DeltaTime)
 
 void AEnemyAIController::BeginPlay()
 {
-	Super::BeginPlay();
-	if (DefaultBehaviourTree != nullptr)
+	Super::BeginPlay();	
+}
+
+void AEnemyAIController::OnPossess(APawn* InPawn)
+{
+	Super::OnPossess(InPawn);
+
+	AEnemyCharacter* Enemy = Cast<AEnemyCharacter>(InPawn);
+	if (!Enemy) return;
+
+	if (DefaultBehaviourTree)
 	{
-		RunBehaviorTree(DefaultBehaviourTree);		
-		BlackboardComp = GetBlackboardComponent();		
+		RunBehaviorTree(DefaultBehaviourTree);
+		BlackboardComp = GetBlackboardComponent();
+	}
+
+	if (BlackboardComp)
+	{
+		BlackboardComp->SetValueAsVector(TEXT("GuardPosition"), InPawn->GetActorLocation());	
 	}
 }
+
 
 void AEnemyAIController::SwitchBehaviourTree(UBehaviorTree* NextTree)
 {
