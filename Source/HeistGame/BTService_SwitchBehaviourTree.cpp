@@ -21,6 +21,7 @@ void UBTService_SwitchBehaviourTree::TickNode(UBehaviorTreeComponent& OwnerComp,
 
 	bool playerVisible = OwnerComp.GetBlackboardComponent()->GetValueAsBool(GetSelectedBlackboardKey());
 	
+	//Runs at the top of each tree anyway so check for dead in here.
 	if (Enemy->isDead)
 	{
 		AIController->GetBrainComponent()->StopLogic("Dead");
@@ -42,6 +43,7 @@ void UBTService_SwitchBehaviourTree::TickNode(UBehaviorTreeComponent& OwnerComp,
 		if (!lastKnownLocation)
 		{
 			Enemy->isAgressive = false;
+			AIController->ClearFocus(EAIFocusPriority::Gameplay);
 			AIController->SwitchBehaviourTree(AIController->DefaultBehaviourTree);
 		}
 	}
