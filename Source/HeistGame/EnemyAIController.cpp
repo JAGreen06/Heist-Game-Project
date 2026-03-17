@@ -47,7 +47,8 @@ void AEnemyAIController::OnPossess(APawn* InPawn)
 
 	if (BlackboardComp)
 	{
-		BlackboardComp->SetValueAsVector(TEXT("GuardPosition"), InPawn->GetActorLocation());	
+		BlackboardComp->SetValueAsVector(TEXT("GuardPosition"), InPawn->GetActorLocation());		
+		Enemy->GuardRotation = Enemy->GetActorRotation();
 	}
 }
 

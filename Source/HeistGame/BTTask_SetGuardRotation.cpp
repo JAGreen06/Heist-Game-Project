@@ -16,7 +16,7 @@ EBTNodeResult::Type UBTTask_SetGuardRotation::ExecuteTask(UBehaviorTreeComponent
 
 
 	Enemy->SetActorRotation(Enemy->GuardRotation);
-	
-	return EBTNodeResult::Succeeded;
+	AIController->SetControlRotation(Enemy->GuardRotation);
 
+	return EBTNodeResult::Succeeded;
 }
