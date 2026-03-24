@@ -13,7 +13,7 @@ void AEnemyAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);	
 	APlayerCharacter* PlayerChar = Cast<APlayerCharacter>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
-	if (AEnemyCharacter* Enemy = Cast<AEnemyCharacter>(GetPawn()))
+	/*if (AEnemyCharacter* Enemy = Cast<AEnemyCharacter>(GetPawn()))
 	{
 		if (Enemy->isDead || !Enemy->enemyAiming)
 		{
@@ -24,7 +24,7 @@ void AEnemyAIController::Tick(float DeltaTime)
 		{
 			SetFocus(PlayerChar);
 		}
-	}
+	}*/
 }
 
 void AEnemyAIController::BeginPlay()

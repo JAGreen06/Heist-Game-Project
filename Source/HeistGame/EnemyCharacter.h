@@ -8,6 +8,7 @@
 
 
 class ARifle;
+class AEnemyAIController;
 
 UCLASS()
 class HEISTGAME_API AEnemyCharacter : public ACharacter
@@ -33,8 +34,9 @@ private:
 	UPROPERTY()
 	AActor* Weapon;
 	UPROPERTY(EditAnywhere)
-	TSubclassOf<ARifle> RifleClass;
-
+	TSubclassOf<ARifle> RifleClass;	
+	UPROPERTY()
+	AEnemyAIController* AIRef;
 
 	UPROPERTY(EditAnywhere, Category = "Health")
 	float EnemyHealth = 100.0f;
@@ -57,4 +59,6 @@ public:
 
 	UPROPERTY()
 	FRotator GuardRotation;	
+
+	
 };

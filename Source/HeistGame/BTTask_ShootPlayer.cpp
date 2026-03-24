@@ -23,6 +23,7 @@ EBTNodeResult::Type UBTTask_ShootPlayer::ExecuteTask(UBehaviorTreeComponent& Own
 				float distanceToPlayer = FVector::Dist(Enemy->GetActorLocation(), Player->GetActorLocation());
 				if (distanceToPlayer <= 150.0f) { return EBTNodeResult::Failed; }
 
+				Enemy->enemyAiming = true;
 
 				FHitResult Hit;			
 

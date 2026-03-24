@@ -28,8 +28,17 @@ void UBTService_LineOfSight::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* 
 	
 	if (AIController->LineOfSightTo(PlayerChar) && directionDotProduct > 0.5f && distanceToPlayer < 1500.0f)
 	{
-		OwnerComp.GetBlackboardComponent()->SetValueAsBool(GetSelectedBlackboardKey(), true);
-		Enemy->enemyAiming = true;		
+		OwnerComp.GetBlackboardComponent()->SetValueAsBool(GetSelectedBlackboardKey(), true);		
+
+		if (Enemy->isDead || !Enemy->enemyAiming)
+		{
+			AIController->ClearFocus(EAIFocusPriority::Gameplay);
+			return;
+		}
+		if (Enemy->enemyAiming && PlayerChar)
+		{
+			AIController->SetFocus(PlayerChar);
+		}
 	}
 	else
 	{

@@ -85,7 +85,6 @@ void APlayerCharacter::Tick(float DeltaTime)
 		SpringArm->TargetArmLength = FMath::FInterpTo(SpringArm->TargetArmLength, deathFOV, DeltaTime, interpSpeed);
 	}
 
-
 	StaminaDrain();
 }
 

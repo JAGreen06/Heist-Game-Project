@@ -2,6 +2,8 @@
 
 
 #include "EnemyCharacter.h"
+#include "BehaviorTree/BlackboardComponent.h"
+#include "EnemyAIController.h"
 #include "Rifle.h"
 
 // Sets default values
@@ -19,11 +21,18 @@ void AEnemyCharacter::BeginPlay()
 
 	Weapon = GetWorld()->SpawnActor<ARifle>(RifleClass);
 	Weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale, FName("RifleSocket"));
+	AIRef = Cast<AEnemyAIController>(GetController());
+	if (!AIRef)
+	{
+		return;
+	}
+	AIRef->GetBlackboardComponent()->SetValueAsFloat("CurrentHealth", EnemyHealth);
 }
 
 float AEnemyCharacter::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
 	EnemyHealth -= DamageAmount;	
+	AIRef->GetBlackboardComponent()->SetValueAsFloat("CurrentHealth", EnemyHealth);
 
 	UE_LOG(LogTemp, Warning, TEXT("Health: %f"), EnemyHealth);
 
