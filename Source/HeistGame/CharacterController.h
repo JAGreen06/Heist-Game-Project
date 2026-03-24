@@ -34,6 +34,11 @@ private:
 	UPROPERTY()
 	UUserWidget* NEXT;
 
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UUserWidget> FailLevelClass;
+	UPROPERTY()
+	UUserWidget* FAIL;
+
 	UPROPERTY()
 	FTimerHandle ExtractionTimeLeft;
 
@@ -43,6 +48,8 @@ private:
 public:
 
 	void ShowNextLevelScreen();
+
+	void FailLevelScreen();
 
 	UPROPERTY()
 	AExtractionPoint* ExtractionRef;

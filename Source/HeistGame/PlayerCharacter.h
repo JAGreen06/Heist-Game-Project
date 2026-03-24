@@ -14,6 +14,7 @@ class UInputAction;
 
 class ARifle;
 class ACharacterController;
+class AHeistGameMode;
 
 UCLASS()
 class HEISTGAME_API APlayerCharacter : public ACharacter
@@ -106,21 +107,30 @@ private:
 	UPROPERTY()
 	ACharacterController* ControllerRef;
 	UPROPERTY()
-	FHitResult Hit;
+	AHeistGameMode* GamemodeRef;
 
+
+	UPROPERTY(EditDefaultsOnly, Category = "Timer")
+	float deathTimeOffset = 2.0f;
+	UPROPERTY()
+	FTimerHandle DeathTimer;
+	void PlayerDeath();
+	float deathFOV = 1000.0f;
+
+	//Player Shooting.
+	UPROPERTY()
+	FHitResult Hit;
 	UPROPERTY(EditDefaultsOnly)
 	int maxShots = 20;	
-
 	float shotDamage = 10.0f;
-	
-
 	float castRange = 10000.0f;
 	FVector cameraLocation;
 	FRotator cameraRotation;
 	bool hitDetected;
 
-	UPROPERTY(EditAnywhere, Category = "Health")
-	float PlayerHealth = 100.0f;
+	//Sprinting
+	float SprintDrain = 0.5f;
+	void  StaminaDrain();
 
 	//Movement Handling.
 	void MoveForwardHandler(const FInputActionValue& Value);
@@ -156,4 +166,10 @@ public:
 	//Player Dead.
 	UPROPERTY(BlueprintReadOnly)
 	bool PlayerDead = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "HUD")
+	float PlayerHealth = 100.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "HUD")
+	float SprintAmount = 100.0f;
 };

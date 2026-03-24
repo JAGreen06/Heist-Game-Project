@@ -14,7 +14,6 @@ EBTNodeResult::Type UBTTask_SetGuardRotation::ExecuteTask(UBehaviorTreeComponent
 	AEnemyCharacter* Enemy = Cast<AEnemyCharacter>(AIController->GetPawn());
 	if (!Enemy) { return EBTNodeResult::Failed; }
 
-
 	Enemy->SetActorRotation(Enemy->GuardRotation);
 	AIController->SetControlRotation(Enemy->GuardRotation);
 

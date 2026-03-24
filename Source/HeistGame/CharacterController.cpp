@@ -27,6 +27,10 @@ void ACharacterController::BeginPlay()
 		NEXT = CreateWidget(this, NextLevelClass);		
 	}
 
+	if (FailLevelClass)
+	{
+		FAIL = CreateWidget(this, FailLevelClass);
+	}
 }
 
 float ACharacterController::GetTimeTillExtract()
@@ -44,6 +48,14 @@ void ACharacterController::ShowNextLevelScreen()
 	if (EXTRACTIONTIME) { EXTRACTIONTIME->RemoveFromViewport(); }
 
 	if (NEXT) { NEXT->AddToViewport(); }
+
+	SetShowMouseCursor(true);
+	SetPause(true);
+}
+
+void ACharacterController::FailLevelScreen()
+{
+	if (FAIL) { FAIL->AddToViewport(); }
 
 	SetShowMouseCursor(true);
 	SetPause(true);

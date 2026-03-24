@@ -9,17 +9,35 @@
 /**
  * 
  */
+class ACharacterController;
+
 UCLASS()
 class HEISTGAME_API AHeistGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
 
 public:
+
+	AHeistGameMode();
+
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
+
 	UFUNCTION(BlueprintCallable)
 	void LevelComplete(bool success);
+
+	UPROPERTY(BlueprintReadOnly)
+	float ElapsedTime;
+
+protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
 
 private:
 	UPROPERTY(EditAnywhere, Category = "Levels")
 	FName NextLevelName;
+	UPROPERTY()
+	ACharacterController* ControllerRef;
+
 	
 };

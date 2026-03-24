@@ -14,11 +14,13 @@
 
 #include "Rifle.h"
 #include "CharacterController.h"
+#include "HeistGameMode.h"
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+ 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.	
+	PrimaryActorTick.bStartWithTickEnabled = true;
 	PrimaryActorTick.bCanEverTick = true;
 
 	//Spring Arm Setup
@@ -39,6 +41,7 @@ void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	ControllerRef = Cast<ACharacterController>(GetController());
+	GamemodeRef = Cast<AHeistGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 
 	if (ControllerRef) {
 		UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(ControllerRef->GetLocalPlayer());
@@ -57,9 +60,10 @@ float APlayerCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Damag
 
 	if (PlayerHealth <= 0)
 	{
-		PlayerDead = true;
+		PlayerDead = true;		
 		APawn* myPawn = UGameplayStatics::GetPlayerPawn(this, 0);
-		myPawn->DisableInput(UGameplayStatics::GetPlayerController(this, 0)); 
+		myPawn->DisableInput(UGameplayStatics::GetPlayerController(this, 0));
+		GetWorld()->GetTimerManager().SetTimer(DeathTimer, this, &APlayerCharacter::PlayerDeath, deathTimeOffset, false);		
 	}
 
 	return DamageAmount;
@@ -75,6 +79,14 @@ void APlayerCharacter::Tick(float DeltaTime)
 	{
 		AimDownSight(DeltaTime);
 	}
+
+	if (PlayerDead == true)
+	{
+		SpringArm->TargetArmLength = FMath::FInterpTo(SpringArm->TargetArmLength, deathFOV, DeltaTime, interpSpeed);
+	}
+
+
+	StaminaDrain();
 }
 
 // Called to bind functionality to input
@@ -112,6 +124,46 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	EIC->BindAction(ReloadAction, ETriggerEvent::Completed, this, &APlayerCharacter::ReloadHandler);
 }
 
+void APlayerCharacter::PlayerDeath()
+{
+	GamemodeRef->LevelComplete(false);
+}
+
+void APlayerCharacter::StaminaDrain()
+{
+	//Handle Stamina.
+	if (isSprinting && SprintAmount >= 0.0f)
+	{
+		SprintAmount -= SprintDrain;
+
+		if (SprintAmount <= 0.0f)
+		{
+			SprintAmount = 0.0f;
+			isSprinting = false;
+		}
+
+		UE_LOG(LogTemp, Warning, TEXT("Sprint: %f"), SprintAmount);
+	}
+	else
+	{
+		if (SprintAmount < 100.0f)
+		{
+			SprintAmount += SprintDrain;
+			UE_LOG(LogTemp, Warning, TEXT("Sprint: %f"), SprintAmount);
+		}
+	}
+
+	//Change Movement speed.
+	if (isSprinting && SprintAmount > 0.0f)
+	{
+		GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
+	}
+	else
+	{
+		GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
+	}
+}
+
 void APlayerCharacter::MoveForwardHandler(const FInputActionValue& Value)
 {
 	AddMovementInput(GetActorForwardVector() * Value.Get<float>());
@@ -134,15 +186,9 @@ void APlayerCharacter::TurnHandler(const FInputActionValue& Value)
 
 void APlayerCharacter::SprintHandler(const FInputActionValue& Value)
 {
-	isSprinting = Value.Get<bool>();
-	
-	if (isSprinting && !isAiming)
+	if (SprintAmount > 0.0f)
 	{
-		GetCharacterMovement()->MaxWalkSpeed = SprintSpeed;
-	}
-	else
-	{
-		GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
+		isSprinting = Value.Get<bool>();		
 	}
 }
 

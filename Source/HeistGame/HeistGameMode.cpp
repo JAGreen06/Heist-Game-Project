@@ -3,6 +3,29 @@
 
 #include "HeistGameMode.h"
 #include "Kismet/GameplayStatics.h"
+#include "CharacterController.h"
+
+AHeistGameMode::AHeistGameMode()
+{
+	PrimaryActorTick.bStartWithTickEnabled = true;
+	PrimaryActorTick.bCanEverTick = true;
+}
+
+void AHeistGameMode::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	ElapsedTime += DeltaTime;
+	//UE_LOG(LogTemp, Warning, TEXT("Time: %f"), ElapsedTime);
+}
+
+void AHeistGameMode::BeginPlay()
+{
+	Super::BeginPlay();
+	ControllerRef = Cast<ACharacterController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	
+}
+
 
 void AHeistGameMode::LevelComplete(bool success)
 {
@@ -12,6 +35,11 @@ void AHeistGameMode::LevelComplete(bool success)
 	}
 	else
 	{
-		//Show a fail level screen, retry, quit etc.
+		if (!ControllerRef) { return; };
+		ControllerRef->FailLevelScreen();		
 	}
 }
+
+
+
+
