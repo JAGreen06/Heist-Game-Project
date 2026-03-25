@@ -22,6 +22,8 @@ EBTNodeResult::Type UBTTask_MeleePlayer::ExecuteTask(UBehaviorTreeComponent& Own
 	float distanceToPlayer = FVector::Dist(Enemy->GetActorLocation(), PlayerChar->GetActorLocation());
 	if(distanceToPlayer >= 150.0f) { return EBTNodeResult::Failed; }
 	
+	Enemy->enemyAiming = true;
+
 	FHitResult Hit;
 
 	FCollisionQueryParams Params;

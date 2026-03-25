@@ -38,8 +38,6 @@ private:
 	UPROPERTY()
 	AEnemyAIController* AIRef;
 
-	UPROPERTY(EditAnywhere, Category = "Health")
-	float EnemyHealth = 100.0f;
 
 public:
 	UPROPERTY(EditInstanceOnly) //Allows each individual enemy to have its own designated patrol points.
@@ -60,5 +58,6 @@ public:
 	UPROPERTY()
 	FRotator GuardRotation;	
 
-	
+	UPROPERTY(EditAnywhere, Category = "Health")
+	float EnemyHealth = 100.0f;
 };

@@ -24,6 +24,7 @@ EBTNodeResult::Type UBTTask_ShootPlayer::ExecuteTask(UBehaviorTreeComponent& Own
 				if (distanceToPlayer <= 150.0f) { return EBTNodeResult::Failed; }
 
 				Enemy->enemyAiming = true;
+				AIController->SetFocus(Player);
 
 				FHitResult Hit;			
 
