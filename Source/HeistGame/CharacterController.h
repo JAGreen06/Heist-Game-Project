@@ -11,6 +11,15 @@
 
 class AExtractionPoint;
 
+UENUM(BlueprintType)
+enum class GameUIState : uint8
+{
+	MainMenu,
+	LevelSelect,
+	Options,
+	Game
+};
+
 UCLASS()
 class HEISTGAME_API ACharacterController : public APlayerController
 {
@@ -39,6 +48,16 @@ private:
 	UPROPERTY()
 	UUserWidget* FAIL;
 
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UUserWidget> MenuLevelClass;
+	UPROPERTY()
+	UUserWidget* MENU;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UUserWidget> LevelSelectClass;
+	UPROPERTY()
+	UUserWidget* LEVELSELECT;
+
 	UPROPERTY()
 	FTimerHandle ExtractionTimeLeft;
 
@@ -50,6 +69,9 @@ public:
 	void ShowNextLevelScreen();
 
 	void FailLevelScreen();
+
+	UFUNCTION(BlueprintCallable)
+	void SetUIState(GameUIState nextState);
 
 	UPROPERTY()
 	AExtractionPoint* ExtractionRef;

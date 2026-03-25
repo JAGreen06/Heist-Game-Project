@@ -12,8 +12,7 @@ void ACharacterController::BeginPlay()
 
 	if (HUDWidgetClass)
 	{
-		HUD = CreateWidget(this, HUDWidgetClass);
-		if (HUD) { HUD->AddToViewport(); }
+		HUD = CreateWidget(this, HUDWidgetClass);		
 	}
 
 	if (ExtractionTimeClass)
@@ -30,6 +29,25 @@ void ACharacterController::BeginPlay()
 	if (FailLevelClass)
 	{
 		FAIL = CreateWidget(this, FailLevelClass);
+	}
+
+	if (MenuLevelClass)
+	{
+		MENU = CreateWidget(this, MenuLevelClass);
+	}
+
+	if (LevelSelectClass)
+	{
+		LEVELSELECT = CreateWidget(this, LevelSelectClass);
+	}
+
+	if (UGameplayStatics::GetCurrentLevelName(this) == "MenuLevel")
+	{
+		SetUIState(GameUIState::MainMenu);
+	}
+	else
+	{
+		SetUIState(GameUIState::Game);
 	}
 }
 
@@ -59,4 +77,33 @@ void ACharacterController::FailLevelScreen()
 
 	SetShowMouseCursor(true);
 	SetPause(true);
+}
+
+void ACharacterController::SetUIState(GameUIState nextState)
+{	
+	if (HUD) HUD->RemoveFromViewport();
+	if (MENU) MENU->RemoveFromViewport();
+	if (LEVELSELECT) LEVELSELECT->RemoveFromViewport();
+
+	switch (nextState)
+	{
+	case GameUIState::MainMenu:
+	{
+		if (MENU) { MENU->AddToViewport(); }
+		SetShowMouseCursor(true);
+		break;
+	}
+	case GameUIState::LevelSelect:
+	{
+		if (LEVELSELECT) { LEVELSELECT->AddToViewport(); }
+		SetShowMouseCursor(true);
+		break;
+	}	
+	case GameUIState::Game:
+	{
+		if (HUD) { HUD->AddToViewport(); }
+		SetShowMouseCursor(false);
+		break;
+	}
+	}
 }

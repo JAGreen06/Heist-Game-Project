@@ -6,6 +6,7 @@
 #include "EnemyAIController.h"
 #include "Rifle.h"
 
+
 // Sets default values
 AEnemyCharacter::AEnemyCharacter()
 {
