@@ -36,7 +36,7 @@ void AHeistGameMode::LevelComplete(bool success)
 	else
 	{
 		if (!ControllerRef) { return; };
-		ControllerRef->FailLevelScreen();		
+		ControllerRef->SetUIState(GameUIState::Fail);
 	}
 }
 

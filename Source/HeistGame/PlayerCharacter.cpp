@@ -121,6 +121,9 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 	//Reloading R.
 	EIC->BindAction(ReloadAction, ETriggerEvent::Completed, this, &APlayerCharacter::ReloadHandler);
+
+	//Pause Esc.
+	EIC->BindAction(PauseAction, ETriggerEvent::Started, this, &APlayerCharacter::PauseHandler);
 }
 
 void APlayerCharacter::PlayerDeath()
@@ -161,6 +164,18 @@ void APlayerCharacter::StaminaDrain()
 	{
 		GetCharacterMovement()->MaxWalkSpeed = WalkSpeed;
 	}
+}
+
+void APlayerCharacter::PauseHandler(const FInputActionValue& Value)
+{
+	if (ControllerRef->IsPaused())
+	{
+		ControllerRef->SetUIState(GameUIState::Game);
+	}
+	else
+	{
+		ControllerRef->SetUIState(GameUIState::Pause);
+	}	
 }
 
 void APlayerCharacter::MoveForwardHandler(const FInputActionValue& Value)

@@ -10,14 +10,16 @@
  */
 
 class AExtractionPoint;
+class APlayerCharacter;
 
 UENUM(BlueprintType)
 enum class GameUIState : uint8
 {
 	MainMenu,
 	LevelSelect,
-	Options,
-	Game
+	Fail,
+	Game, 
+	Pause
 };
 
 UCLASS()
@@ -58,6 +60,12 @@ private:
 	UPROPERTY()
 	UUserWidget* LEVELSELECT;
 
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UUserWidget> PauseLevelClass;
+	UPROPERTY()
+	UUserWidget* PAUSEGAME;
+
+
 	UPROPERTY()
 	FTimerHandle ExtractionTimeLeft;
 
@@ -67,8 +75,6 @@ private:
 public:
 
 	void ShowNextLevelScreen();
-
-	void FailLevelScreen();
 
 	UFUNCTION(BlueprintCallable)
 	void SetUIState(GameUIState nextState);

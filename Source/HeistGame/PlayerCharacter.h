@@ -66,6 +66,9 @@ private:
 	UPROPERTY(EditAnywhere)
 	UInputAction* ADSAction;
 
+	//Pause input.
+	UPROPERTY(EditDefaultsOnly)
+	UInputAction* PauseAction;
 
 	//Movement inputs.
 	UPROPERTY(EditAnywhere)
@@ -131,6 +134,9 @@ private:
 	//Sprinting
 	float SprintDrain = 0.5f;
 	void  StaminaDrain();
+
+	//Pause Handling.
+	void PauseHandler(const FInputActionValue& Value);
 
 	//Movement Handling.
 	void MoveForwardHandler(const FInputActionValue& Value);

@@ -5,6 +5,7 @@
 #include "Blueprint/UserWidget.h"
 #include "Kismet/GameplayStatics.h"
 #include "ExtractionPoint.h"
+#include "PlayerCharacter.h"
 
 void ACharacterController::BeginPlay()
 {
@@ -40,6 +41,11 @@ void ACharacterController::BeginPlay()
 	{
 		LEVELSELECT = CreateWidget(this, LevelSelectClass);
 	}
+	if (PauseLevelClass)
+	{
+		PAUSEGAME = CreateWidget(this, PauseLevelClass);
+	}
+
 
 	if (UGameplayStatics::GetCurrentLevelName(this) == "MenuLevel")
 	{
@@ -71,19 +77,13 @@ void ACharacterController::ShowNextLevelScreen()
 	SetPause(true);
 }
 
-void ACharacterController::FailLevelScreen()
-{
-	if (FAIL) { FAIL->AddToViewport(); }
-
-	SetShowMouseCursor(true);
-	SetPause(true);
-}
-
 void ACharacterController::SetUIState(GameUIState nextState)
 {	
-	if (HUD) HUD->RemoveFromViewport();
-	if (MENU) MENU->RemoveFromViewport();
-	if (LEVELSELECT) LEVELSELECT->RemoveFromViewport();
+	if (HUD) { HUD->RemoveFromViewport(); }
+	if (MENU) { MENU->RemoveFromViewport(); }
+	if (LEVELSELECT) { LEVELSELECT->RemoveFromViewport(); }
+	if (PAUSEGAME) { PAUSEGAME->RemoveFromViewport(); }
+	if (FAIL) { FAIL->RemoveFromViewport(); }
 
 	switch (nextState)
 	{
@@ -98,12 +98,27 @@ void ACharacterController::SetUIState(GameUIState nextState)
 		if (LEVELSELECT) { LEVELSELECT->AddToViewport(); }
 		SetShowMouseCursor(true);
 		break;
-	}	
+	}
+	case GameUIState::Fail:
+	{
+		if (FAIL) { FAIL->AddToViewport(); }
+
+		SetShowMouseCursor(true);
+		SetPause(true);
+		break;
+	}
 	case GameUIState::Game:
 	{
 		if (HUD) { HUD->AddToViewport(); }
 		SetShowMouseCursor(false);
+		SetPause(false);
 		break;
+	}
+	case GameUIState::Pause:
+	{
+		if (PAUSEGAME) { PAUSEGAME->AddToViewport(); }
+ 		SetPause(true);
+		SetShowMouseCursor(true);
 	}
 	}
 }
