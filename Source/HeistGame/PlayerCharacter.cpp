@@ -15,6 +15,7 @@
 #include "Rifle.h"
 #include "CharacterController.h"
 #include "HeistGameMode.h"
+#include "Barrel.h"
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -268,6 +269,14 @@ void APlayerCharacter::FireHandler()
 			//Applys damage to the actor that has been hit.
 			UGameplayStatics::ApplyDamage(Hit.GetActor(), shotDamage, ControllerRef, this, UDamageType::StaticClass());
 			UE_LOG(LogTemp, Warning, TEXT("Hit Actor: %s"), *Hit.GetActor()->GetName());
+
+			//UPrimitiveComponent* RootComp = Cast<UPrimitiveComponent>(Hit.GetActor()->GetRootComponent());
+			//RootComp->AddImpulse(cameraRotation.Vector() * 5000 * RootComp->GetMass());
+
+			if (Cast<ABarrel>(Hit.GetActor())) 
+			{
+				Cast<ABarrel>(Hit.GetActor())->Explode();
+			}
 		}
 	}
 }
