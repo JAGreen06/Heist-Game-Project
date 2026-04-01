@@ -10,6 +10,7 @@
  * 
  */
 class ACharacterController;
+class UHeistGameInstance;
 
 UCLASS()
 class HEISTGAME_API AHeistGameMode : public AGameModeBase
@@ -17,7 +18,6 @@ class HEISTGAME_API AHeistGameMode : public AGameModeBase
 	GENERATED_BODY()
 
 public:
-
 	AHeistGameMode();
 
 	// Called every frame
@@ -38,6 +38,7 @@ private:
 	FName NextLevelName;
 	UPROPERTY()
 	ACharacterController* ControllerRef;
-
+	UPROPERTY()
+	UHeistGameInstance* InstanceRef;
 	
 };

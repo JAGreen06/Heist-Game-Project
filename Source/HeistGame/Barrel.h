@@ -7,6 +7,7 @@
 #include "Barrel.generated.h"
 
 class URadialForceComponent;
+class ACharacterController;
 
 UCLASS()
 class HEISTGAME_API ABarrel : public AActor
@@ -31,7 +32,6 @@ private:
 	UStaticMeshComponent* BarrelMesh;
 	UPROPERTY(EditDefaultsOnly, Category = "Collision")
 	URadialForceComponent* ForceComponent;
-
 
 public:
 
