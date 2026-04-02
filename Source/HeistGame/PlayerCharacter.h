@@ -40,67 +40,69 @@ private:
 	//Weapon Variables.
 	UPROPERTY()
 	AActor* Weapon;
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly, Category = "Rifle")
 	TSubclassOf<ARifle> RifleClass;
 
 
 	//Camera and ADS variables.
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly, Category = "Camera")
 	USpringArmComponent* SpringArm;
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly, Category = "Camera")
 	UCameraComponent* Camera;
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly, Category = "Camera")
 	float zoomFOV = 65.0f;
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly, Category = "Camera")
 	float defaultFOV = 90.0f;
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly, Category = "Camera")
 	float interpSpeed = 10.0f;
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly, Category = "Camera")
 	float defaultArmLength = 300.0f;
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly, Category = "Camera")
 	float zoomArmLength = 150.0f;
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly, Category = "Camera")
 	FVector DefaultOffset = FVector(0.0f, 70.0f, 70.0f);
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly, Category = "Camera")
 	FVector ZoomOffset = FVector(0.0f, 50.0f, 70.0f);
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	UInputAction* ADSAction;
 
 	//Pause input.
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	UInputAction* PauseAction;
 
 	//Movement inputs.
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	UInputMappingContext* characterMappingContext;
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	UInputAction* MoveForwardAction;
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	UInputAction* StrafeAction;
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	UInputAction* TurnAction;
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	UInputAction* LookUpAction;
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	UInputAction* JumpAction;
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	UInputAction* SprintAction;
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	UInputAction* CrouchAction;
 
 
 	//Sprint Variables.
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly, Category = "Sprinting")
 	float WalkSpeed = 600.f;
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly, Category = "Sprinting")
 	float SprintSpeed = 1000.f;
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly, Category = "Sprinting")
 	bool isSprinting;
+	float SprintDrain = 0.5f;
+	void  StaminaDrain();
 	
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	UInputAction* FireAction;
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	UInputAction* ReloadAction;
 
 
@@ -115,25 +117,26 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Timer")
 	float deathTimeOffset = 2.0f;
+
 	UPROPERTY()
 	FTimerHandle DeathTimer;
+	UFUNCTION()
 	void PlayerDeath();
 	float deathFOV = 1000.0f;
+
 
 	//Player Shooting.
 	UPROPERTY()
 	FHitResult Hit;
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category = "Shooting")
 	int maxShots = 20;	
+	UPROPERTY(EditDefaultsOnly, Category = "Shooting")
 	float shotDamage = 10.0f;
 	float castRange = 10000.0f;
 	FVector cameraLocation;
 	FRotator cameraRotation;
 	bool hitDetected;
 
-	//Sprinting
-	float SprintDrain = 0.5f;
-	void  StaminaDrain();
 
 	//Pause Handling.
 	void PauseHandler(const FInputActionValue& Value);

@@ -45,8 +45,12 @@ void AJewel::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherAc
 {
 	characterRef = Cast<APlayerCharacter>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
 	if (!characterRef) { return; }
-	characterRef->SetCarryingJewel(true);
-	Destroy();
+
+	if (characterRef == OtherActor)
+	{
+		characterRef->SetCarryingJewel(true);
+		Destroy();
+	}	
 }
 
 

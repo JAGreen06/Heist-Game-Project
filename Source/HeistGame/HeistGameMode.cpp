@@ -34,6 +34,7 @@ void AHeistGameMode::LevelComplete(bool success)
 	{
 		if (UGameplayStatics::GetCurrentLevelName(GetWorld()) == "BankLevel")
 		{
+			//Add if statemnt for best time.
 			InstanceRef->banklevelTime = ElapsedTime;
 		}
 		if (UGameplayStatics::GetCurrentLevelName(GetWorld()) == "TowerLevel")

@@ -25,7 +25,7 @@ public:
 
 
 private: 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly, Category = "Mesh")
 	UStaticMeshComponent* RifleMesh;
 
 };

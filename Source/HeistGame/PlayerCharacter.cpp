@@ -59,9 +59,11 @@ float APlayerCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Damag
 
 	UE_LOG(LogTemp, Warning, TEXT("Health: %f"), PlayerHealth);
 
-	if (PlayerHealth <= 0)
+	if (PlayerHealth <= 0 && !PlayerDead)
 	{
 		PlayerDead = true;		
+
+		UE_LOG(LogTemp, Warning, TEXT("Player dead"));
 		APawn* myPawn = UGameplayStatics::GetPlayerPawn(this, 0);
 		myPawn->DisableInput(UGameplayStatics::GetPlayerController(this, 0));
 		GetWorld()->GetTimerManager().SetTimer(DeathTimer, this, &APlayerCharacter::PlayerDeath, deathTimeOffset, false);		
@@ -129,6 +131,7 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 void APlayerCharacter::PlayerDeath()
 {
+	UE_LOG(LogTemp, Warning, TEXT("PLAYER DEATH IS CALLED."));
 	GamemodeRef->LevelComplete(false);
 }
 
@@ -247,13 +250,20 @@ void APlayerCharacter::FireHandler()
 	// moving along the camera vectors rotation for a length of cast range.
 	FVector End = cameraLocation + cameraRotation.Vector() * castRange;
 
+
+	// Ignores the player actor as a query parameter, 
+	// Stops player from shooting themselves accidently.
+
+	FCollisionQueryParams Params;
+	Params.AddIgnoredActor(this);
+
 	// Returns a boolean.
 	// Pass in a FHitResult, The cameraLocation as the start location,
 	// The Position where the line trace should finish, and the channel type.
 	if (isAiming && shotCount > 0)
 	{		
 		shotCount--;
-		hitDetected = GetWorld()->LineTraceSingleByChannel(Hit, cameraLocation, End, ECC_Visibility);
+		hitDetected = GetWorld()->LineTraceSingleByChannel(Hit, cameraLocation, End, ECC_Visibility, Params);
 
 		//Debug Line.
 		FColor LineColor = hitDetected ? FColor::Red : FColor::Green;

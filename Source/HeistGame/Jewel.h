@@ -27,7 +27,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 private:
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly, Category = "Mesh")
 	UStaticMeshComponent* jewelMesh;
 	UPROPERTY()
 	USphereComponent* collisionSphere;

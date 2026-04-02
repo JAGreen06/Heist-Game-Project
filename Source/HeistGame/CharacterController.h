@@ -35,32 +35,32 @@ private:
 	UPROPERTY()
 	UUserWidget* HUD;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category = "UI")
 	TSubclassOf<UUserWidget> ExtractionTimeClass;
 	UPROPERTY()
 	UUserWidget* EXTRACTIONTIME;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category = "UI")
 	TSubclassOf<UUserWidget> NextLevelClass;
 	UPROPERTY()
 	UUserWidget* NEXT;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category = "UI")
 	TSubclassOf<UUserWidget> FailLevelClass;
 	UPROPERTY()
 	UUserWidget* FAIL;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category = "UI")
 	TSubclassOf<UUserWidget> MenuLevelClass;
 	UPROPERTY()
 	UUserWidget* MENU;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category = "UI")
 	TSubclassOf<UUserWidget> LevelSelectClass;
 	UPROPERTY()
 	UUserWidget* LEVELSELECT;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, Category = "UI")
 	TSubclassOf<UUserWidget> PauseLevelClass;
 	UPROPERTY()
 	UUserWidget* PAUSEGAME;

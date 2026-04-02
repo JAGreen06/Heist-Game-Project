@@ -33,7 +33,7 @@ private:
 
 	UPROPERTY()
 	AActor* Weapon;
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly, Category = "Rifle")
 	TSubclassOf<ARifle> RifleClass;	
 	UPROPERTY()
 	AEnemyAIController* AIRef;
@@ -52,7 +52,9 @@ public:
 	UPROPERTY()
 	bool isAgressive = false;	
 
+	UPROPERTY(EditDefaultsOnly, Category = "Damage")
 	float ShotDamage = 10.0f;	
+	UPROPERTY(EditDefaultsOnly, Category = "Damage")
 	float MeleeDamage = 5.0f;
 
 	UPROPERTY()
