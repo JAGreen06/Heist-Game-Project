@@ -29,6 +29,9 @@ public:
 	UPROPERTY(BlueprintReadOnly)
 	float ElapsedTime;
 
+	UPROPERTY(EditDefaultsOnly)
+	USoundBase* AlarmSound;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

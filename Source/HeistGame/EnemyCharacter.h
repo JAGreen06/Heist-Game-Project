@@ -42,6 +42,10 @@ private:
 public:
 	UPROPERTY(EditInstanceOnly) //Allows each individual enemy to have its own designated patrol points.
 	TArray<AActor*> PatrolPoints;
+
+	UPROPERTY(EditInstanceOnly)
+	TArray<AActor*> AlarmPoint;
+
 	UPROPERTY()
 	int index;
 

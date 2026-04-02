@@ -161,6 +161,7 @@ public:
 
 	//Jewel Carrying.
 	void SetCarryingJewel(bool isCarrying) { isCarryingJewel = isCarrying; }
+
 	UFUNCTION(BlueprintCallable)
 	bool GetCarryingJewel() { return isCarryingJewel; }
 
