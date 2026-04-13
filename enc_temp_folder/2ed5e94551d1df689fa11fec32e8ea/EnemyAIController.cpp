@@ -28,7 +28,6 @@ void AEnemyAIController::BeginPlay()
 	Super::BeginPlay();	
 }
 
-//Sets up default behvaiour tree when enemies are possesed, getting its starting rotation and position.
 void AEnemyAIController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
@@ -49,7 +48,7 @@ void AEnemyAIController::OnPossess(APawn* InPawn)
 	}
 }
 
-//Switching of behaviour tree function, called in a service.
+
 void AEnemyAIController::SwitchBehaviourTree(UBehaviorTree* NextTree)
 {
 	if (!NextTree) { return; }
@@ -58,5 +57,6 @@ void AEnemyAIController::SwitchBehaviourTree(UBehaviorTree* NextTree)
 	RunBehaviorTree(NextTree);
 	BlackboardComp = GetBlackboardComponent();
 	UE_LOG(LogTemp, Warning, TEXT("Switching to tree"));
+
 }
 

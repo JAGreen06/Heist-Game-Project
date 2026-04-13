@@ -30,7 +30,7 @@ void UBTService_SwitchBehaviourTree::TickNode(UBehaviorTreeComponent& OwnerComp,
 		return;
 	}
 
-	//If players is visible and emey is not already on aggressive tree switch to it.
+
 	if ((playerVisible && !Enemy->isAgressive))
 	{
 		Enemy->isAgressive = true;			
@@ -40,7 +40,6 @@ void UBTService_SwitchBehaviourTree::TickNode(UBehaviorTreeComponent& OwnerComp,
 	{
 		bool lastKnownLocation = OwnerComp.GetBlackboardComponent()->IsVectorValueSet(TEXT("LastKnownLocation"));
 
-		//Switch to the default tree instead.
 		if (!lastKnownLocation)
 		{
 			Enemy->isAgressive = false;

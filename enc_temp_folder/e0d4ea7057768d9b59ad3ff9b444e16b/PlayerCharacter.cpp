@@ -63,7 +63,6 @@ float APlayerCharacter::TakeDamage(float DamageAmount, FDamageEvent const& Damag
 	{
 		PlayerDead = true;		
 
-		//Deposses Pawn and, set timer so death animation can play.
 		UE_LOG(LogTemp, Warning, TEXT("Player dead"));
 		APawn* myPawn = UGameplayStatics::GetPlayerPawn(this, 0);
 		myPawn->DisableInput(UGameplayStatics::GetPlayerController(this, 0));
@@ -83,7 +82,7 @@ void APlayerCharacter::Tick(float DeltaTime)
 	{
 		AimDownSight(DeltaTime);
 	}
-	//Zooms out the player camera smoothly, when the player dies.
+
 	if (PlayerDead == true)
 	{
 		SpringArm->TargetArmLength = FMath::FInterpTo(SpringArm->TargetArmLength, deathFOV, DeltaTime, interpSpeed);
@@ -173,7 +172,6 @@ void APlayerCharacter::StaminaDrain()
 
 void APlayerCharacter::PauseHandler(const FInputActionValue& Value)
 {
-	//Pause UI State
 	if (ControllerRef->IsPaused())
 	{
 		ControllerRef->SetUIState(GameUIState::Game);

@@ -10,12 +10,9 @@ ABarrel::ABarrel()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-
-	//Mesh Setup.
 	BarrelMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Barrel Mesh"));
 	BarrelMesh->SetupAttachment(RootComponent);
 
-	//Force Component Setup.
 	BarrelMesh->SetSimulatePhysics(true);
 	ForceComponent = CreateDefaultSubobject<URadialForceComponent>(TEXT("Force Component"));
 	ForceComponent->SetupAttachment(BarrelMesh);
@@ -39,9 +36,8 @@ void ABarrel::Explode()
 {
 	UE_LOG(LogTemp, Warning, TEXT("BOOM"));
 
-	//Fires a radial impulse upon Line trace from the player to the barrel.
 	ForceComponent->FireImpulse();
-	Destroy(); //Destroys barrel actor.
+	Destroy();
 
 }
 

@@ -26,7 +26,6 @@ EBTNodeResult::Type UBTTask_MeleePlayer::ExecuteTask(UBehaviorTreeComponent& Own
 
 	FHitResult Hit;
 
-	//Query if Enemy is shooting itself and ignore the Line trace if so.
 	FCollisionQueryParams Params;
 	Params.AddIgnoredActor(Enemy);
 

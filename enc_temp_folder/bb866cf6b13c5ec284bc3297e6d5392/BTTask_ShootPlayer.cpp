@@ -28,14 +28,12 @@ EBTNodeResult::Type UBTTask_ShootPlayer::ExecuteTask(UBehaviorTreeComponent& Own
 
 				FHitResult Hit;			
 
-				//Ignore Shots on itself.
 				FCollisionQueryParams Params;
 				Params.AddIgnoredActor(Enemy);
 
 				FVector Start = Enemy->GetMesh()->GetSocketLocation(TEXT("RifleSocket"));
 					
 				FVector End = Player->GetActorLocation();
-				//Line trace to the player.
 				bool hitDetected = GetWorld()->LineTraceSingleByChannel(Hit, Start, End, ECC_Visibility, Params);
 
 				//Debug Line.

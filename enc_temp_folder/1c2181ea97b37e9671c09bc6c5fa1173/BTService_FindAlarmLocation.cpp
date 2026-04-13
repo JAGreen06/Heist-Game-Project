@@ -16,9 +16,7 @@ void UBTService_FindAlarmLocation::TickNode(UBehaviorTreeComponent& OwnerComp, u
 	AEnemyCharacter* Enemy = Cast<AEnemyCharacter>(AIController->GetPawn());
 	if (!Enemy) { return; }
 
-	//Set an Fvector to the location of the targetpoint defined instance only of the scout.
 	FVector AlarmLoc = Enemy->AlarmPoint[0]->GetActorLocation();
 
-	//Passes vector value to blackboard key.
 	OwnerComp.GetBlackboardComponent()->SetValueAsVector(GetSelectedBlackboardKey(), AlarmLoc);
 }

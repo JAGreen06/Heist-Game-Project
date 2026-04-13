@@ -9,11 +9,9 @@ EBTNodeResult::Type UBTTask_SoundAlarm::ExecuteTask(UBehaviorTreeComponent& Owne
 {
 	AHeistGameMode* gamemodeRef = Cast<AHeistGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 	if (!gamemodeRef) { return EBTNodeResult::Failed; }
-	
-	//Play alarm sound.
+
 	UGameplayStatics::PlaySound2D(GetWorld(), gamemodeRef->AlarmSound, 1.0f, 1.0f, 0.0f);
 
-	//Level Failed.
 	gamemodeRef->LevelComplete(false);
 	return EBTNodeResult::Succeeded;
 }

@@ -18,14 +18,11 @@ void UBTService_SetPlayerLocation::TickNode(UBehaviorTreeComponent& OwnerComp, u
 	AEnemyCharacter* Enemy = Cast<AEnemyCharacter>(AIController->GetPawn());
 	if (!Enemy) { return; }
 
-	//Sets players location.
 	OwnerComp.GetBlackboardComponent()->SetValueAsObject(GetSelectedBlackboardKey(), PlayerChar);	
 
-	//Sets distance form the player to the enemy.
 	float Distance = FVector::Dist(Enemy->GetActorLocation(), PlayerChar->GetActorLocation());
 	OwnerComp.GetBlackboardComponent()->SetValueAsFloat(TEXT("DistanceToPlayer"), Distance);
 
-	//Sets the players health.
 	float health = PlayerChar->PlayerHealth;
 	OwnerComp.GetBlackboardComponent()->SetValueAsFloat(TEXT("PlayerHealth"), health);
 }

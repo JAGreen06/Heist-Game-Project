@@ -11,8 +11,6 @@ void ACharacterController::BeginPlay()
 {
 	Super::BeginPlay();
 
-
-	//Widget Setup.
 	if (HUDWidgetClass)
 	{
 		HUD = CreateWidget(this, HUDWidgetClass);		
@@ -48,7 +46,7 @@ void ACharacterController::BeginPlay()
 		PAUSEGAME = CreateWidget(this, PauseLevelClass);
 	}
 
-	//Set Starting Menu State.
+
 	if (UGameplayStatics::GetCurrentLevelName(this) == "MenuLevel")
 	{
 		SetUIState(GameUIState::MainMenu);
@@ -79,11 +77,6 @@ void ACharacterController::ShowNextLevelScreen()
 	SetPause(true);
 }
 
-/*
-* SetUIState uses enum parameters for changing level widgets.
-* Using a switch case, we clear the existing Widgets on the viewport
-* then change the widget depending on the state that is passed into the function.
-*/
 void ACharacterController::SetUIState(GameUIState nextState)
 {	
 	if (HUD) { HUD->RemoveFromViewport(); }

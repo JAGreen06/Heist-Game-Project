@@ -18,8 +18,6 @@ void UBTService_LineOfSight::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* 
 	AEnemyCharacter* Enemy = Cast<AEnemyCharacter>(AIController->GetPawn());
 	if (!Enemy) { return; }
 
-
-	//Checks if enemys dead and stops its AI component.
 	if (Enemy->isDead)
 	{
 		AIController->GetBrainComponent()->StopLogic("Dead");
@@ -28,26 +26,22 @@ void UBTService_LineOfSight::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* 
 		return;
 	}
 
-	//Dot Product Calculation.
+
 	FVector AIForwardVector = Enemy->GetActorForwardVector();
 	FVector PlayerPositionVector = PlayerChar->GetActorLocation();
 	FVector AIPositionVector = Enemy->GetActorLocation();
 	FVector	AItoPlayerVector = PlayerPositionVector - AIPositionVector;
 	AItoPlayerVector.Normalize();
 
-	
 	float distanceToPlayer = FVector::Dist(Enemy->GetActorLocation(), PlayerChar->GetActorLocation());
 	float directionDotProduct = FVector::DotProduct(AItoPlayerVector, AIForwardVector);	
 	
-	//If players is visible, within range of DOT, and within a distance of the enemy we set a 
-	//blackboard visibility key to visible.
 	if (AIController->LineOfSightTo(PlayerChar) && directionDotProduct > 0.5f && distanceToPlayer < 1500.0f)
 	{
 		OwnerComp.GetBlackboardComponent()->SetValueAsBool(GetSelectedBlackboardKey(), true);	
 	}
 	else
 	{
-		//Clears focus and sets visibilty to false.
 		AIController->ClearFocus(EAIFocusPriority::Gameplay);
 		Enemy->enemyAiming = false;		
 		OwnerComp.GetBlackboardComponent()->ClearValue(GetSelectedBlackboardKey());	

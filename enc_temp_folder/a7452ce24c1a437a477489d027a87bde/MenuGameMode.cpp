@@ -9,7 +9,6 @@ void AMenuGameMode::BeginPlay()
 {
 	ControllerRef = Cast<ACharacterController>(UGameplayStatics::GetPlayerController(this, 0));
 
-	//Unposses Pawn.
 	myPawn = UGameplayStatics::GetPlayerPawn(this, 0);
 	myPawn->DisableInput(ControllerRef);
 }

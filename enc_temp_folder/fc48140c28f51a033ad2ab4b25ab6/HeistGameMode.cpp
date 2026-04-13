@@ -30,8 +30,6 @@ void AHeistGameMode::BeginPlay()
 
 void AHeistGameMode::LevelComplete(bool success)
 {
-	//Opens the level passed through the vairable defined in each gamemode blueprint. 
-	//Sets the time elapsed to the specific level in game instance for display accross switching levels.
 	if (success)
 	{
 		if (UGameplayStatics::GetCurrentLevelName(GetWorld()) == "BankLevel")
@@ -51,7 +49,6 @@ void AHeistGameMode::LevelComplete(bool success)
 	}
 	else
 	{
-		//Fails Level UI State.
 		if (!ControllerRef) { return; };
 		ControllerRef->SetUIState(GameUIState::Fail);
 	}
