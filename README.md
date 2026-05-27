@@ -7,6 +7,11 @@
 ![Blueprint](https://img.shields.io/badge/Blueprint-grey?style=flat)
 ![Platform](https://img.shields.io/badge/Platform-Windows-0078D6?style=flat&logo=windows)
 
+<div>
+<img src="Screenshots/UE5Overview.png" width="400" style="display:inline-block"/>
+<img src="Screenshots/AI.png" width="400" style="display:inline-block"/>
+</div>
+
 ---
 
 ## About the Project
@@ -21,9 +26,9 @@ This was a solo second-year project developed in Unreal Engine 5 to deepen my un
 
 ## Features
 
-- **AI Behaviour Trees** — Guards operate on two dynamically switching behaviour trees, transitioning from patrol to aggressive depending on player visibility
+- **AI Behaviour Trees** — Guards operate on Behaviour trees, controlled through custom written C++ tasks and services
+- **Dynamic Behaviour Tree Switching** - Enemies dynamically switch behaviour trees at run time through C++ tasks and functions in the AIController, based on current player states and enemy states
 - **Environmental Query System (EQS)** — Guards use EQS to dynamically flee from the player when reaching a low health threshold at runtime
-- **Third-person character controller** — Custom movement with jumping and crouching, alongside an animation blueprint using blend spaces
 - **Stealth mechanics** — Line-of-sight checks performed by custom C++ tasks determine a guard's current state
 
 ---
@@ -32,7 +37,7 @@ This was a solo second-year project developed in Unreal Engine 5 to deepen my un
 
 The guard AI is built using UE5's native AI framework:
  
-- **AIController** — Custom C++ controller class managing behaviour tree transitions and guard location upon possession
+- **AIController** — Custom C++ controller class managing behaviour tree initialisation and resolving possesion timing issues
 - **Behaviour Trees** — Split into two types: *Passive* and *Aggressive*. Handles all guard logic including patrolling and chasing the player, with the tree switching dynamically based on player visibility
 - **EQS Queries** — Runtime spatial queries handle guard fleeing when health is low, achieved through a combination of EQS scoring and filtering
 
@@ -64,5 +69,5 @@ The guard AI is built using UE5's native AI framework:
    ```
    
 2. Right-click `HeistGame.uproject` and select **Generate Visual Studio project files**
-4. Open `HeistGame.uproject` in Unreal Engine 5
-5. Press **Play**
+3. Open `HeistGame.uproject` in Unreal Engine 5
+4. Press **Play**
